@@ -1,8 +1,8 @@
 # SafeSoft WebServices
 
-Repository for SafeSoft Web Service Layer
+Repositorio para capa de servicios web de SafeSoft
 
-## Project links
+## Links de proyecto
 
 [SafeSoft Desktop](https://github.com/KBeDeveloper/SafeSoft-Desktop)
 <br>
@@ -10,19 +10,22 @@ Repository for SafeSoft Web Service Layer
 <br>
 [SafeSoft WS](https://github.com/KBeDeveloper/SafeSoft-WebServices)
 
-## Group members
+## Miembros del equipo
 
-    Nicolás Álvarez
-    Esteban Arriagada
-    Benjamín Calisto
-    Luis Cereceda
+[Nicolás Álvarez (GearlessCrow)](https://github.com/GearlessCrow)
+<br>
+Esteban Arriagada
+<br>
+[Benjamín Calisto (KBeDeveloper)](https://github.com/KBeDeveloper)
+<br>
+[Luis Cereceda (luiscereceda)](https://github.com/luiscereceda)
 
 ## TO-DO
 
-    [!] REST API TO IMPORT DOCS
-    [!] REST API TO EXPORT BD VIEWS/SELECT
-    [!] TEST MODULES FOR JSON RESPONSE
+    [!] API REST para importar documentos
+    [!] API REST para exportar datos de vista/consulta
+    [!] Módulos de prueba de entrada y salida de datos
 
-## Resolved
+## Resuelto
 
-    PLEASE WAIT
+    NO DISPONIBLE
