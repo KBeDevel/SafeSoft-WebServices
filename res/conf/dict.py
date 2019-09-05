@@ -1,0 +1,9 @@
+data = {
+    'user' : [
+        'supervisor',
+        ''
+    ],
+    'docs' : [
+        ''
+    ]
+}
