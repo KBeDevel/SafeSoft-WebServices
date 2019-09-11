@@ -1,9 +1,0 @@
-data = {
-    'user' : [
-        'supervisor',
-        ''
-    ],
-    'docs' : [
-        ''
-    ]
-}
