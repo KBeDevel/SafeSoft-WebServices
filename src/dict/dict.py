@@ -16,6 +16,8 @@
 # Decimal = double
 #
 
+import datetime
+
 _main = {
     'user_dict' : {
         'name' : {
@@ -42,12 +44,27 @@ _main = {
         'pass' : {
             str # SHA256 or SHA512, it will affect the string length (Recommended: SHA256)
         },
-        'user_code' : {
-            str # A random string with length 10
+        'user_code' : { # A random string with length 10
+            'EM-XXXXX',
+            'CO-XXXXX',
+            'ME-XXXXX',
+            'SV-XXXXX',
+            'TS-XXXXX',
+            'AD-XXXXX',
+            'EG-XXXXX'
         },
         'parent_entity' : { # Only if it is an employee
             None,
             'user_code'
+        },
+        'created_at' : {
+            datetime.timestamp
+        },
+        'updated_at' : {
+            datetime.timestamp
+        },
+        'lastlogin' : {
+            datetime.timestamp
         }
     }
 }

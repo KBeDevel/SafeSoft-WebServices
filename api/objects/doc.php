@@ -5,14 +5,6 @@ class Doc{
     private $type;
     private $contentType;
     private $person;
-
-    public function Create(){
-        # TO-DO
-    }
-
-    public function Read(){
-        
-    }
 }
 
 ?>

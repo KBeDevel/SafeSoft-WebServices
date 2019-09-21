@@ -1,8 +1,7 @@
 <?php
 
-include "../config/database.php";
+include "../config/db.class.php";
 
 $connector = new Connector();
-$conn = $connector->connect();
 
 ?>
