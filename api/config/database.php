@@ -5,11 +5,17 @@ class Connector{
     static protected $username = 'ssws';
     static protected $password = 'sspw';
     static protected $dbname   = 'ssdb';
-    static public $conn;
+    static public $link;
 
     public function connect(){
-        self::$conn = mysqli(self::$hostname,self::$username,self::$password,self::$dbname) or die('');
-        return self::$conn;
+        include "./init.php";
+
+        self::$link = new msql_init(self::$hostname,self::$username,self::$password,self::$dbname);
+        return self::$link;
+    }
+
+    public function kill($connection){
+        mysqli_close($connection);
     }
 }
 

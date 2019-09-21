@@ -14,7 +14,7 @@ Repositorio para capa de servicios web de SafeSoft
 
 [Nicolás Álvarez (GearlessCrow)](https://github.com/GearlessCrow)
 <br>
-Esteban Arriagada
+[Esteban Arriagada (zirux20)](https://github.com/zirux20)
 <br>
 [Benjamín Calisto (KBeDeveloper)](https://github.com/KBeDeveloper)
 <br>
