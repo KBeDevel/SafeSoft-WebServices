@@ -11,10 +11,10 @@ class Connector{
 	
 	function __construct($params=array()){
 		$this->conn = false;
-		$this->host = '127.0.0.1'; //hostname
-		$this->user = 'ssws'; //username
-		$this->password = 'sspw'; //password
-		$this->baseName = 'ssdb'; //name of your database
+		$this->host = '127.0.0.1';
+		$this->user = 'ssws';
+		$this->password = 'sspw';
+		$this->baseName = 'ssdb';
 		$this->port = '3306';
 		$this->debug = true;
 		$this->connect();

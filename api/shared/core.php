@@ -19,7 +19,6 @@ class Core{
         }else{
             $query = "SELECT Code FROM USERS WHERE Token = '$token'";
             $response = $connector->getOne($query);
-            
         }        
     }
 }
