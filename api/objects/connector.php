@@ -1,7 +1,10 @@
 <?php
 
-include "../config/db.class.php";
+require "../config/db.class.php";
 
-$connector = new Connector();
+$dbclass = new DBClass();
+$dbclass::init();
+
+$connector = $dbclass->link;
 
 ?>

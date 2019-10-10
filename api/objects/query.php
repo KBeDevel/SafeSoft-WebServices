@@ -12,11 +12,27 @@ class Query{
 
     public function update($data, $destinyTable, $criteria){
         include "connector.php";
-        if($criteria==NULL){
-            
+
+        if($criteria!=NULL&&$destinyTable!=NULL){
+            $setterElements = FALSE;
+
+            if(gettype($data)==="array"){
+                settype($setterElements, "array");
+                foreach($data as $key => $value){
+                    if(gettype($data)=="double"||gettype($data)=="integer"||gettype($data)=="float"){
+                        array_push($setterElements, $data[$key]." = ".$value);
+                    }else{
+                        array_push($setterElements, $data[$key]." = '".$value."'");
+                    }
+                }                
+            }
+
+            if($setterElements){
+                $query = "UPDATE ".$destinyTable." SET ".$data." WHERE $criteria";
+            }
+        }else{
+            return FALSE;
         }
-        $query = "UPDATE SET WHERE";
-        return 0;
     }
 
     public function insert($data, $destinyData, $destinyTable, $criteria){

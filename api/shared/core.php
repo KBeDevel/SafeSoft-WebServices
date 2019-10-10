@@ -2,7 +2,7 @@
 
 class Core{
     public function generateRandomString($length) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ=_%@';
         $charactersLength = strlen($characters);
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
@@ -19,7 +19,9 @@ class Core{
         }else{
             $query = "SELECT Code FROM USERS WHERE Token = '$token'";
             $response = $connector->getOne($query);
-        }        
+        }
+
+        return $response;
     }
 }
 

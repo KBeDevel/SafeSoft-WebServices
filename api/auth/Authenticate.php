@@ -1,46 +1,72 @@
 <?php
 
-include "./header.php";
-include "../objects/user.php";
+require "./header.php";
+// include "../objects/user.php";
 
-$outerData = [];
-$error = true;
+$response = [];
+$error = "";
+$valid = false;
 
 try{
-    $error = "";
 
-    $id = base64_decode($_POST['id']);
-    $criteria = $_POST['criteria']; # token, email, username
-    $pass  = base64_decode($_POST['pass']);
+    $id = base64_decode($_GET['id']);
+    $criteria = $_GET['criteria']; # token, email, username
+    $pass = base64_decode($_GET['pass']);
 
-    if($id==NULL||trim($id)==''){
-        $error .= " User ID not set. ";
-    }
-
-    if($criteria==NULL||trim($criteria)==''){
-        $error .= " Criteria not set. ";
-    }
-
-    if($pass==NULL||trim($pass)==''){
-        $error .= " Password not set ";
-    }
-
-    $tempUser = new User();
-
-    $outerResponse = $tempUser->auth($id,$criteria,$pass);
-
-    if(trim($error)==''){
-        echo json_encode($outerResponse, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    if($id==NULL||trim($id)==""){
+        $error .= " [User ID not set] ";
     }else{
-        $outerResponse['error'] .= $error;
-        echo json_encode($outerResponse, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        if($criteria=='username'||$criteria=='email'){
+            if($pass==NULL||trim($pass)==''){
+                $error .= " [Password not set] ";
+            }else{
+                $valid = true;
+            }
+        }else{
+            if($criteria=='token'){
+                $valid = true;
+            }else if($criteria==NULL||trim($criteria)==''){
+                $error .= " [Criteria not set] ";
+            }else{
+                $error .= " [Criteria not allowed] ";
+            }
+        }    
+    }
+
+    // $tempUser = new User();
+
+    // $response = $tempUser->auth($id,$criteria,$pass);
+
+    if($valid){
+        require '../shared/core.php';
+
+        $core = new Core();
+
+        $token = $core->generateRandomString(64);
+
+        $response['hasErrors'] = false;
+        $response['token'] = $token;
+        echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }else{
+        $response['hasErrors'] = true;
+        $response['error'] .= $error;
+        echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }
 }catch(Exception $e){
-    array_push($outerData['hasErrors'], true);
-    array_push($outerData['error'], "Internal server error. ".$e->getMessage());
-    array_push($outerData['token'], null);
-    echo json_encode($outerData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    $response['hasErrors'] = true;
+    $response['error'] = "Internal server error. ".$e->getMessage();
+    $response['token'] = null;
+    echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
+
+# REQUEST DATA [POST]
+#
+# URL: https://pftsafesoft.000webhostapp.com/api/auth/Authenticate.php?id=dG9wb2NvbmFsZXJnaWE=&criteria=username&pass=ZTBlNjA5N2E2ZjhhZjA3ZGFmNWZjNzI0NDMzNmJhMzcxMzM3MTNhOGZjNzM0NWMzNmQ2NjdkZmE1MTNmYWJhYQ==
+#
+# id=dG9wb2NvbmFsZXJnaWE=
+# criteria=username
+# pass=ZTBlNjA5N2E2ZjhhZjA3ZGFmNWZjNzI0NDMzNmJhMzcxMzM3MTNhOGZjNzM0NWMzNmQ2NjdkZmE1MTNmYWJhYQ==
+#
 
 # RESPONSE [IDEAL]:
 #

@@ -1,126 +1,90 @@
 <?php
 
-class Connector{
-	private $conn;
-	private $host;
-	private $user;
-	private $password;
-	private $baseName;
-	private $port;
-	private $Debug;
+# CODE SOURCE: https://gist.github.com/anjerodesu/4502474
+# MODIFIED BY: KBeDeveloper
+
+require_once "db.settings.php";
+
+class DBClass extends DatabaseSettings{
+
+	var $classQuery;
+	var $link;
 	
-	function __construct($params=array()){
-		$this->conn = false;
-		$this->host = '127.0.0.1';
-		$this->user = 'ssws';
-		$this->password = 'sspw';
-		$this->baseName = 'ssdb';
-		$this->port = '3306';
-		$this->debug = true;
-		$this->connect();
-	}
- 
-	function __destruct(){
-		$this->disconnect();
-	}
+	var $errno = '';
+	var $error = '';
 	
-	function connect(){
-		if (!$this->conn){
-			$this->conn = mysql_connect($this->host, $this->user, $this->password);	
-			mysql_select_db($this->baseName, $this->conn); 
-			mysql_set_charset('utf8',$this->conn);
-			
-			if (!$this->conn){
-				$this->status_fatal = true;
-				echo 'Connection BDD failed';
-				die();
-			} 
-			else{
-				$this->status_fatal = false;
-			}
-		}
- 
-		return $this->conn;
-	}
- 
-	function disconnect(){
-		if ($this->conn){
-			@pg_close($this->conn);
-		}
-	}
-	
-	function getOne($query){
-		$cnx = $this->conn;
-		if (!$cnx || $this->status_fatal){
-			echo 'GetOne -> Connection BDD failed';
-			die();
-		}
- 
-		$cur = @mysql_query($query, $cnx);
- 
-		if ($cur == FALSE){		
-			$errorMessage = @pg_last_error($cnx);
-			$this->handleError($query, $errorMessage);
-		} 
-		else{
-			$this->Error=FALSE;
-			$this->BadQuery="";
-			$tmp = mysql_fetch_array($cur, MYSQL_ASSOC);
-			
-			$return = $tmp;
-		}
- 
-		@mysql_free_result($cur);
-		return $return;
-	}
-	
-	function getAll($query){
-		$cnx = $this->conn;
-		if (!$cnx || $this->status_fatal){
-			echo 'GetAll -> Connection BDD failed';
-			die();
-		}
+	# Init link
+	function DBClass(){
+		$settings = DatabaseSettings::getSettings();
 		
-		mysql_query("SET NAMES 'utf8'");
-		$cur = mysql_query($query);
-		$return = array();
+		$host = $settings['dbhost'];
+		$name = $settings['dbname'];
+		$user = $settings['dbusername'];
+		$pass = $settings['dbpassword'];
 		
-		while($data = mysql_fetch_assoc($cur)){ 
-			array_push($return, $data);
-		} 
- 
-		return $return;
+		$this->link = new mysqli( $host , $user , $pass , $name );
 	}
-    
-    # FOR INSERT AND UPDATE
-	function execute($query,$use_slave=false){
-		$cnx = $this->conn;
-		if (!$cnx||$this->status_fatal){
-			return null;
-		}
- 
-		$cur = @mysql_query($query, $cnx);
- 
-		if ($cur == FALSE){
-			$ErrorMessage = @mysql_last_error($cnx);
-			$this->handleError($query, $ErrorMessage);
-		}
-		else{
-			$this->Error=FALSE;
-			$this->BadQuery="";
-			$this->NumRows = mysql_affected_rows();
-			return;
-		}
-		@mysql_free_result($cur);
+
+	static function init(){
+		$this->DBClass();
 	}
 	
-	function handleError($query, $str_erreur){
-		$this->Error = TRUE;
-		$this->BadQuery = $query;
-		if ($this->Debug){
-			echo "Query : ".$query."<br>";
-			echo "Error : ".$str_erreur."<br>";
+	# Executes a database query
+	function query( $query ){
+		$this->classQuery = $query;
+		return $this->link->query( $query );
+	}
+	
+	function escapeString( $query ){
+		return $this->link->escape_string( $query );
+	}
+	
+	# Get the data return int result
+	function numRows( $result ){
+		return $result->num_rows;
+	}
+	
+	function lastInsertedID(){
+		return $this->link->insert_id;
+	}
+	
+	# Get query using assoc method
+	function fetchAssoc( $result ){
+		return $result->fetch_assoc();
+	}
+	
+	# Gets array of query results
+	function fetchArray( $result , $resultType = MYSQLI_ASSOC ){
+		return $result->fetch_array( $resultType );
+	}
+	
+	# Fetches all result rows as an associative array, a numeric array, or both
+	function fetchAll( $result , $resultType = MYSQLI_ASSOC ){
+		return $result->fetch_all( $resultType );
+	}
+	
+	# Get a result row as an enumerated array
+	function fetchRow( $result ){
+		return $result->fetch_row();
+	}
+	
+	# Free all MySQL result memory
+	function freeResult( $result ){
+		$this->link->free_result( $result );
+	}
+	
+	# Closes the database connection
+	function close(){
+		$this->link->close();
+	}
+	
+	function sql_error(){
+		if( empty( $error ) )
+		{
+			$errno = $this->link->errno;
+			$error = $this->link->error;
 		}
+		return $errno . ' : ' . $error;
 	}
 }
 

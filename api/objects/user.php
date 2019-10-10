@@ -52,7 +52,7 @@ class User{
                 $code = strtoupper($core->generateRandomString(10));
             }
 
-            return $prefix.$code;
+            return $this->code = $prefix.$code;
         }else{
             return FALSE;
         }
@@ -174,7 +174,7 @@ class User{
     public function delete(){
         include "./connector.php";
     }
-    # END USER CUD    
+    # END USER CRUD    
 
     public function auth($id, $criteria, $password){
         include "./connector.php";
