@@ -1,0 +1,158 @@
+Users:
+  Code:
+    type: VARCHAR
+    length: 13
+    rules: [PK]
+
+  RUT:
+    type:	VARCHAR
+    length: 12
+    rules: [UNIQUE]
+
+  Name:
+    type: VARCHAR
+    length: 30
+    rules: [UNICODE, UTF-8, NO_SPECIAL_CHARS]
+
+  Phone:
+    type: INTEGER
+    length: 9
+    rules: [UNIQUE]
+
+  Address:
+    type: VARCHAR
+    length: 50
+    rules: []
+
+  Type:
+    type: INTEGER
+    length: 1
+    rules: []
+
+  Email:
+    type: VARCHAR
+    length: 40
+    rules: [UNIQUE]
+
+  Username:
+    type: VARCHAR
+    length: 25
+    rules: [UNIQUE]
+
+  Pass:
+    type: VARCHAR
+    length: 64
+    rules: []
+
+  Token:
+    type: VARCHAR
+    length: 32
+    rules: [NULL, UNIQUE, UTF-8]
+
+  TokenTime:
+    type: TIMESTAMP
+    length: NULL
+    rules: [DEFAULT_NULL]
+
+  CreatedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  UpdatedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  LoginAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  ParentOrg:
+    type: VARCHAR
+    length: 13
+    rules: [DEFAULT_NULL]
+
+Files:
+  FileId:
+    type: VARCHAR
+    length: 32
+    rules: [PK]
+
+  FileName:
+    type: VARCHAR
+    length: 40
+    rules: [UNIQUE, UTF-8]
+
+  UploadAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  FileDigest:
+    type: MEDIUMTEXT
+    length: NULL
+    rules: []
+
+  Type:
+    type: INTEGER
+    length: 1
+    rules: []
+
+  EventId:
+    type: VARCHAR
+    length: 32
+    rules: [FK]
+
+Events:
+  EventId:
+    type: VARCHAR
+    length: 32
+    rules: [PK]
+
+  Type:
+    type: INTEGER
+    length: 1
+    rules: []
+
+  CreatedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  ClosedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: [DEFAULT_NULL]
+
+  SubmittedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  UserCode:
+    type: VARCHAR
+    length: 13
+    rules: [FK]
+
+Comments:
+  CommentId:
+    type: VARCHAR
+    length: 32
+    rules: [PK]
+
+  Content:
+    type: TEXT
+    length: NULL
+    rules: [UNICODE, UTF-8]
+
+  Type:
+    type: VARCHAR
+    length: 32
+    rules: [UNICODE, UTF-8]
+
+  EventId:
+    type: VARCHAR
+    length: 32
+    rules: [FK]

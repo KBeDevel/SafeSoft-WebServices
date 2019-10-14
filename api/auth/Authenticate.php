@@ -9,9 +9,9 @@ $valid = false;
 
 try{
 
-    $id = base64_decode($_GET['id']);
-    $criteria = $_GET['criteria']; # token, email, username
-    $pass = base64_decode($_GET['pass']);
+    $id = base64_decode($_REQUEST['id']);
+    $criteria = $_REQUEST['criteria']; # token, email, username
+    $pass = base64_decode($_REQUEST['pass']);
 
     if($id==NULL||trim($id)==""){
         $error .= " [User ID not set] ";
