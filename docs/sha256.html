@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Documentación / Base64</title>
+    <link rel="shortcut icon" href="../SafeSoft.svg">
+    <!-- Bootstrap styles -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom styles -->
+    <link rel="stylesheet" type="text/css" href="../res/css/docs.css"
+</head>
+<body>
+    <section class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <h1>Hashing de cadenas de texto/bytes a SHA-256</h1>
+                <p>Wiki de <a href="https://es.wikipedia.org/wiki/SHA-256">SHA-256</a></p>
+                <hr>
+                <h3>C#:</h3>
+                <code>
+                    <pre>
+    
+    using System;  
+    using System.Text;  
+    using System.Security.Cryptography;  
+        
+    namespace HashConsoleApp  
+    {  
+        class Program  
+        {  
+            static void Main(string[] args)  
+            {  
+                string plainData = "Mahesh";  
+                Console.WriteLine("Raw data: {0}", plainData);  
+                string hashedData = ComputeSha256Hash(plainData);  
+                Console.WriteLine("Hash {0}", hashedData);  
+                Console.WriteLine(ComputeSha256Hash("Mahesh"));  
+                Console.ReadLine();  
+            }  
+        
+            static string ComputeSha256Hash(string rawData)  
+            {  
+                // Create a SHA256   
+                using (SHA256 sha256Hash = SHA256.Create())  
+                {  
+                    // ComputeHash - returns byte array  
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));  
+        
+                    // Convert byte array to a string   
+                    StringBuilder builder = new StringBuilder();  
+                    for (int i = 0; i < bytes.Length; i++)  
+                    {  
+                        builder.Append(bytes[i].ToString("x2"));  
+                    }  
+                    return builder.ToString();  
+                }  
+            }  
+                        
+        }  
+        
+    }  
+
+                    </pre>
+                </code>
+                <h3>Java:</h3>
+                <code>
+                    <pre>
+                        
+    import java.security.MessageDigest;
+    import java.util.Scanner;
+    import javax.xml.bind.DatatypeConverter;
+    
+    /**
+    * Demonstrates how to generate SHA256 hash in Java
+    * @author JJ
+    */
+    public class SHA256InJava {
+    
+        public static void main(String[] args) {
+            Scanner sn = new Scanner(System.in);
+            System.out.print("Please enter data for which SHA256 is required:");
+            String data = sn.nextLine();
+            
+            SHA256InJava sj = new SHA256InJava();
+            String hash = sj.getSHA256Hash(data);
+            System.out.println("The SHA256 (hexadecimal encoded) hash is:"+hash);
+        }
+    
+        /**
+        * Returns a hexadecimal encoded SHA-256 hash for the input String.
+        * @param data
+        * @return 
+        */
+        private String getSHA256Hash(String data) {
+            String result = null;
+            try {
+                MessageDigest digest = MessageDigest.getInstance("SHA-256");
+                byte[] hash = digest.digest(data.getBytes("UTF-8"));
+                return bytesToHex(hash); // make it printable
+            }catch(Exception ex) {
+                ex.printStackTrace();
+            }
+            return result;
+        }
+        
+        /**
+        * Use javax.xml.bind.DatatypeConverter class in JDK to convert byte array
+        * to a hexadecimal string. Note that this generates hexadecimal in upper case.
+        * @param hash
+        * @return 
+        */
+        private String  bytesToHex(byte[] hash) {
+            return DatatypeConverter.printHexBinary(hash);
+        }
+    }
+
+                    </pre>
+                </code>
+            </div>
+        </div>
+    </section>
+    <!-- Bootstrap scripts -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/19b86170ae.js"></script>
+</body>
+</html>

@@ -57,14 +57,14 @@ Users:
   CreatedAt:
     type: TIMESTAMP
     length: NULL
-    rules: []
+    rules: [DEFAULT_NOW]
 
   UpdatedAt:
     type: TIMESTAMP
     length: NULL
     rules: []
 
-  LoginAt:
+  LoggedAt:
     type: TIMESTAMP
     length: NULL
     rules: []
@@ -85,10 +85,10 @@ Files:
     length: 40
     rules: [UNIQUE, UTF-8]
 
-  UploadAt:
+  UploadedAt:
     type: TIMESTAMP
     length: NULL
-    rules: []
+    rules: [DEFAULT_NOW]
 
   FileDigest:
     type: MEDIUMTEXT
@@ -129,7 +129,7 @@ Events:
   SubmittedAt:
     type: TIMESTAMP
     length: NULL
-    rules: []
+    rules: [DEFAULT_NOW]
 
   UserCode:
     type: VARCHAR
@@ -156,3 +156,19 @@ Comments:
     type: VARCHAR
     length: 32
     rules: [FK]
+
+Attendance:
+  AttenId:
+    type: VARCHAR
+    length: 32
+    rules: [PK]
+
+  CreatedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []
+
+  UpdatedAt:
+    type: TIMESTAMP
+    length: NULL
+    rules: []

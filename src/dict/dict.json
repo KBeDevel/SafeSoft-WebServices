@@ -85,7 +85,7 @@
             "length": null,
             "rules": []
         },
-        "LoginAt": {
+        "LoggedAt": {
             "type": "TIMESTAMP",
             "length": null,
             "rules": []
@@ -205,6 +205,25 @@
             "rules": [
                 "FK"
             ]
+        }
+    },
+    "Attendance": {
+        "AttenId": {
+            "type": "VARCHAR",
+            "length": 32,
+            "rules": [
+                "PK"
+            ]
+        },
+        "CreatedAt": {
+            "type": "TIMESTAMP",
+            "length": null,
+            "rules": []
+        },
+        "UpdatedAt": {
+            "type": "TIMESTAMP",
+            "length": null,
+            "rules": []
         }
     }
 }

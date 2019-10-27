@@ -18,23 +18,6 @@ Repositorio para capa de servicios web de SafeSoft
 <br>
 [Benjamín Calisto (KBeDeveloper)](https://github.com/KBeDeveloper)
 
-## TO-DO
+## Documentación
 
-    [!] MODELO DE DATOS
-    [!] VALIDACIONES DE SANITIZACION DE DATOS DE ENTRADA
-    [!] TOKENIZACIÓN DE RUTINAS Y FUNCIONES RESPECTIVAS (IMPORTAR/EXPORTAR ARCHIVOS, LOGIN, REGISTRO DE CITAS, ETC)
-    [?] RE-ESTRUCTURACIÓN A LARAVEL FRAMEWORK
-
-## Resuelto
-
-    [?] ESTRUCTURA DE DATOS DE USUARIO
-    [%] GENERACIÓN DE TOKEN
-
-## Glosario
-
-    [!] : Crítico
-    [?] : Por confirmar
-    [*] : Opcional
-    [%] : En revisión
-    [$] : Requerido
-    [#] : Confirmado
+Revisa la documentación [aquí](https://kbedeveloper.github.io/SafeSoft-WebServices)

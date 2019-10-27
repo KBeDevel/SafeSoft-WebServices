@@ -1,6 +1,5 @@
 <?php
 
-require "./header.php";
 // include "../objects/user.php";
 
 $response = [];
@@ -14,11 +13,11 @@ try{
     $pass = base64_decode($_REQUEST['pass']);
 
     if($id==NULL||trim($id)==""){
-        $error .= " [User ID not set] ";
+        $error .= "User ID not set";
     }else{
         if($criteria=='username'||$criteria=='email'){
             if($pass==NULL||trim($pass)==''){
-                $error .= " [Password not set] ";
+                $error .= "Password not set";
             }else{
                 $valid = true;
             }
@@ -26,9 +25,9 @@ try{
             if($criteria=='token'){
                 $valid = true;
             }else if($criteria==NULL||trim($criteria)==''){
-                $error .= " [Criteria not set] ";
+                $error .= "Criteria not set";
             }else{
-                $error .= " [Criteria not allowed] ";
+                $error .= "Criteria not allowed";
             }
         }    
     }
@@ -43,9 +42,11 @@ try{
         $core = new Core();
 
         $token = $core->generateRandomString(64);
+        $code = "";
 
         $response['hasErrors'] = false;
         $response['token'] = $token;
+        $response['code'] = $code;
         echo json_encode($response, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
     }else{
         $response['hasErrors'] = true;
@@ -79,7 +80,6 @@ try{
 #
 # {
 #   "hasErrors" : true,
-#   "token" : null,
 #   "error" : "Error message"
 # }
 

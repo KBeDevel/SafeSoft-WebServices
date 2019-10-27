@@ -1,0 +1,8 @@
+code {
+    font-family : monospace;
+    color: blue;
+}
+
+li > b{
+    color: green;
+}
