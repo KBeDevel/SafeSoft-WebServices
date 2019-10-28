@@ -6,3 +6,11 @@ code {
 li > b{
     color: green;
 }
+
+.spacer{
+    padding-top: 20px;
+}
+
+.spacer-sm{
+    padding-top: 8px;
+}

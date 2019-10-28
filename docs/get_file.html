@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Documentación / Autenticación</title>
+    <title>Documentación / Buscar archivo</title>
     <link rel="shortcut icon" href="../SafeSoft.svg">
     <!-- Bootstrap styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -15,56 +15,18 @@
     <section class="container-fluid">
         <div class="row">
             <div class="col">
-                <br>
-                <h1>AUTENTICACIÓN</h1>
-                <h4>Método: <span style="color : red;">POST</span></h4>
+                <h1>Rescatar/buscar archivo</h1>
+                <h4>Método: <span style="color : red;">GET</span></h4>
                 <h4>Parámetros:</h4>
                 <ul>
-                    <li>id</li>
-                    <li>criteria</li>
-                    <li>pass</li>
+                    <li></li>
                 </ul>
                 <h4>Condiciones:</h4>
                 <ul>
-                    <li>id: <b>Debe ser enviado como base64. No puede ser nulo.</b></li>
-                    <li>criteria: <b>Puede tomar los valores [username, email, token]. No puede ser nulo.</b></li>
-                    <li>pass: <b>parámetro opcional <span style="color : red;">sólo</span> si el criterio es <em>token.</em> Es un hash tipo SHA256, codificado a base64</b></li>
+                    <li></li>
                 </ul>
                 <br>
-                <a href="sha256.html">Ver más información acerca de hashing de cadenas de texto a SHA256.</a>
-                <br>
-                <a href="base64.html">Ver más información acerca de codificación de cadenas de texto a base64.</a>
-                <br>
                 <hr>
-                <h5>cURL: (Ejemplo)</h5>
-                <code>
-                    <pre>
-
-    $ curl --data "id=dG9wb2NvbmFsZXJnaWE=&criteria=username&pass=ZTBlNjA5N2E2ZjhhZjA3ZGFmNWZjNzI0NDMzNmJhMzcxMzM3MTNhOGZjNzM0NWMzNmQ2NjdkZmE1MTNmYWJhYQ==" \
-      https://pftsafesoft.000webhostapp.com/api/Auth/Authenticate.php
-
-                    </pre>
-                </code>
-                <h6>Se retornará una cadena de texto con formato JSON:</h6>
-                <code>
-                    <pre>
-
-    // RESPUESTA CORRECTA:
-
-    {
-        "hasErrors" : false,
-        "token" : "VMwx8AWlmKQ1PzG4xUbdIIGYeq1HHD5d" 
-    }
-
-    // RESPUESTA CON ERROR:
-
-    {
-        "hasErrors" : true,
-        "error" : "Error message"
-    }
-
-                    </pre>                    
-                </code>
             </div>
         </div>
     </section>

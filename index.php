@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>SafeSoft | PFT Project</title>
+    <title>SafeSoft-WebServices / Index</title>
     <!-- Bootstrap styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom styles -->
@@ -22,7 +22,7 @@
                 <span class="align-middle">
                     <br>
                     <h1 class="text-center">SafeSoft WebServices</h1>
-                    <p class="text-center">Revisa la documentación <a href="https://github.com/KBeDeveloper/SafeSoft-WebServices/tree/master/docs" target="_blank">aquí</a></p>
+                    <p class="text-center">Revisa la documentación <a href="https://kbedeveloper.github.io/SafeSoft-WebServices" target="_blank">aquí</a></p>
                     <br>
                     <p class="text-center" id="github-link"><a class="github-link" href="https://github.com/KBeDeveloper/SafeSoft-WebServices" target="_blank" title="Revisar repositorio"><i class="fab fa-github"></i></a></p>
                     <br>
