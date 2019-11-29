@@ -1,229 +1,289 @@
 {
     "Users": {
         "Code": {
-            "type": "VARCHAR",
-            "length": 13,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 13,
+            "rul": [
                 "PK"
             ]
         },
         "RUT": {
-            "type": "VARCHAR",
-            "length": 12,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 12,
+            "rul": [
+                "NOT_NULL",
                 "UNIQUE"
             ]
         },
         "Name": {
-            "type": "VARCHAR",
-            "length": 30,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 30,
+            "rul": [
                 "UNICODE",
                 "UTF-8",
                 "NO_SPECIAL_CHARS"
             ]
         },
         "Phone": {
-            "type": "INTEGER",
-            "length": 9,
-            "rules": [
+            "typ": "INTEGER",
+            "len": 9,
+            "rul": [
+                "NOT_NULL",
                 "UNIQUE"
             ]
         },
         "Address": {
-            "type": "VARCHAR",
-            "length": 50,
-            "rules": []
+            "typ": "VARCHAR",
+            "len": 50,
+            "rul": [
+                "NOT_NULL"
+            ]
         },
         "Type": {
-            "type": "INTEGER",
-            "length": 1,
-            "rules": []
+            "typ": "INTEGER",
+            "len": 1,
+            "rul": [
+                "NOT_NULL"
+            ]
         },
         "Email": {
-            "type": "VARCHAR",
-            "length": 40,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 40,
+            "rul": [
+                "NOT_NULL",
                 "UNIQUE"
             ]
         },
         "Username": {
-            "type": "VARCHAR",
-            "length": 25,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 25,
+            "rul": [
+                "NOT_NULL",
                 "UNIQUE"
             ]
         },
         "Pass": {
-            "type": "VARCHAR",
-            "length": 64,
-            "rules": []
+            "typ": "VARCHAR",
+            "len": 64,
+            "rul": [
+                "NOT_NULL"
+            ]
         },
         "Token": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
-                null,
-                "UNIQUE",
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "DEFAULT_NULL",
                 "UTF-8"
             ]
         },
         "TokenTime": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": [
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
                 "DEFAULT_NULL"
             ]
         },
         "CreatedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
+                "DEFAULT_NOW"
+            ]
         },
         "UpdatedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
-        },
-        "LoggedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
-        },
-        "ParentOrg": {
-            "type": "VARCHAR",
-            "length": 13,
-            "rules": [
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
                 "DEFAULT_NULL"
             ]
-        }
-    },
-    "Files": {
-        "FileId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
-                "PK"
+        },
+        "LoggedAt": {
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
+                "DEFAULT_NULL"
             ]
         },
-        "FileName": {
-            "type": "VARCHAR",
-            "length": 40,
-            "rules": [
-                "UNIQUE",
-                "UTF-8"
-            ]
-        },
-        "UploadAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
-        },
-        "FileDigest": {
-            "type": "MEDIUMTEXT",
-            "length": null,
-            "rules": []
-        },
-        "Type": {
-            "type": "INTEGER",
-            "length": 1,
-            "rules": []
-        },
-        "EventId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
-                "FK"
+        "ParentOrg": {
+            "typ": "VARCHAR",
+            "len": 13,
+            "rul": [
+                "DEFAULT_NULL"
             ]
         }
     },
     "Events": {
         "EventId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
                 "PK"
             ]
         },
         "Type": {
-            "type": "INTEGER",
-            "length": 1,
-            "rules": []
+            "typ": "INTEGER",
+            "len": 1,
+            "rul": [
+                "NOT_NULL"
+            ]
         },
         "CreatedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
+                "NOT_NULL"
+            ]
         },
         "ClosedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": [
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
                 "DEFAULT_NULL"
             ]
         },
         "SubmittedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
+                "DEFAULT_NOW"
+            ]
         },
         "UserCode": {
-            "type": "VARCHAR",
-            "length": 13,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 13,
+            "rul": [
                 "FK"
             ]
         }
     },
     "Comments": {
         "CommentId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
                 "PK"
             ]
         },
         "Content": {
-            "type": "TEXT",
-            "length": null,
-            "rules": [
+            "typ": "TEXT",
+            "len": null,
+            "rul": [
                 "UNICODE",
                 "UTF-8"
             ]
         },
         "Type": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
                 "UNICODE",
                 "UTF-8"
             ]
         },
         "EventId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
                 "FK"
             ]
         }
     },
-    "Attendance": {
-        "AttenId": {
-            "type": "VARCHAR",
-            "length": 32,
-            "rules": [
+    "Forms": {
+        "FormId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
                 "PK"
             ]
         },
         "CreatedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
+            "typ": "TIMESTAMP",
+            "len": null,
+            "rul": [
+                "DEFAULT_NOW"
+            ]
         },
-        "UpdatedAt": {
-            "type": "TIMESTAMP",
-            "length": null,
-            "rules": []
+        "EventId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "FK"
+            ]
+        }
+    },
+    "Tools": {
+        "ToolId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "PK"
+            ]
+        },
+        "Name": {
+            "typ": "VARCHAR",
+            "len": 50,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "Status": {
+            "typ": "INTEGER",
+            "len": 1,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "FormId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "FK"
+            ]
+        }
+    },
+    "People": {
+        "PersonId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "PK"
+            ]
+        },
+        "Firstname": {
+            "typ": "VARCHAR",
+            "len": 25,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "Lastname": {
+            "typ": "VARCHAR",
+            "len": 30,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "Type": {
+            "typ": "INTEGER",
+            "len": 1,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "CorpName": {
+            "typ": "VARCHAR",
+            "len": 50,
+            "rul": [
+                "NOT_NULL"
+            ]
+        },
+        "FormId": {
+            "typ": "VARCHAR",
+            "len": 32,
+            "rul": [
+                "FK"
+            ]
         }
     }
 }

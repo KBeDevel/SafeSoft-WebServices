@@ -1,0 +1,26 @@
+{
+  "name": "safesoft-webservices",
+  "version": "0.1.0",
+  "description": "Web Service Layer for SafeSoft (PFT-C5)",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://KBeDeveloper:ba6e1862d2a49ef5e26ce3cd575c70a86ee867ca@github.com/KBeDeveloper/SafeSoft-WebServices.git"
+  },
+  "author": "KBeDeveloper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/KBeDeveloper/SafeSoft-WebServices/issues"
+  },
+  "homepage": "https://github.com/KBeDeveloper/SafeSoft-WebServices#readme",
+  "dependencies": {
+    "fs": "0.0.1-security"
+  }
+}

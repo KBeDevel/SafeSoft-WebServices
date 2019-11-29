@@ -1,6 +1,3 @@
-<?php
-    require 'src/top/headers.php';
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

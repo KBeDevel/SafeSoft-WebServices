@@ -1,174 +1,195 @@
 Users:
   Code:
-    type: VARCHAR
-    length: 13
-    rules: [PK]
+    typ: VARCHAR
+    len: 13
+    rul: [PK]
 
   RUT:
-    type:	VARCHAR
-    length: 12
-    rules: [UNIQUE]
+    typ:	VARCHAR
+    len: 12
+    rul: [NOT_NULL, UNIQUE]
 
   Name:
-    type: VARCHAR
-    length: 30
-    rules: [UNICODE, UTF-8, NO_SPECIAL_CHARS]
+    typ: VARCHAR
+    len: 30
+    rul: [UNICODE, UTF-8, NO_SPECIAL_CHARS]
 
   Phone:
-    type: INTEGER
-    length: 9
-    rules: [UNIQUE]
+    typ: INTEGER
+    len: 9
+    rul: [NOT_NULL, UNIQUE]
 
   Address:
-    type: VARCHAR
-    length: 50
-    rules: []
+    typ: VARCHAR
+    len: 50
+    rul: [NOT_NULL]
 
   Type:
-    type: INTEGER
-    length: 1
-    rules: []
+    typ: INTEGER
+    len: 1
+    rul: [NOT_NULL]
 
   Email:
-    type: VARCHAR
-    length: 40
-    rules: [UNIQUE]
+    typ: VARCHAR
+    len: 40
+    rul: [NOT_NULL, UNIQUE]
 
   Username:
-    type: VARCHAR
-    length: 25
-    rules: [UNIQUE]
+    typ: VARCHAR
+    len: 25
+    rul: [NOT_NULL, UNIQUE]
 
   Pass:
-    type: VARCHAR
-    length: 64
-    rules: []
+    typ: VARCHAR
+    len: 64
+    rul: [NOT_NULL]
 
   Token:
-    type: VARCHAR
-    length: 32
-    rules: [NULL, UNIQUE, UTF-8]
+    typ: VARCHAR
+    len: 32
+    rul: [DEFAULT_NULL, UTF-8]
 
   TokenTime:
-    type: TIMESTAMP
-    length: NULL
-    rules: [DEFAULT_NULL]
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NULL]
 
   CreatedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: [DEFAULT_NOW]
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NOW]
 
   UpdatedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: []
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NULL]
 
   LoggedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: []
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NULL]
 
   ParentOrg:
-    type: VARCHAR
-    length: 13
-    rules: [DEFAULT_NULL]
-
-Files:
-  FileId:
-    type: VARCHAR
-    length: 32
-    rules: [PK]
-
-  FileName:
-    type: VARCHAR
-    length: 40
-    rules: [UNIQUE, UTF-8]
-
-  UploadedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: [DEFAULT_NOW]
-
-  FileDigest:
-    type: MEDIUMTEXT
-    length: NULL
-    rules: []
-
-  Type:
-    type: INTEGER
-    length: 1
-    rules: []
-
-  EventId:
-    type: VARCHAR
-    length: 32
-    rules: [FK]
+    typ: VARCHAR
+    len: 13
+    rul: [DEFAULT_NULL]
 
 Events:
   EventId:
-    type: VARCHAR
-    length: 32
-    rules: [PK]
+    typ: VARCHAR
+    len: 32
+    rul: [PK]
 
   Type:
-    type: INTEGER
-    length: 1
-    rules: []
+    typ: INTEGER
+    len: 1
+    rul: [NOT_NULL]
 
   CreatedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: []
+    typ: TIMESTAMP
+    len: NULL
+    rul: [NOT_NULL]
 
   ClosedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: [DEFAULT_NULL]
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NULL]
 
   SubmittedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: [DEFAULT_NOW]
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NOW]
 
   UserCode:
-    type: VARCHAR
-    length: 13
-    rules: [FK]
+    typ: VARCHAR
+    len: 13
+    rul: [FK]
 
 Comments:
   CommentId:
-    type: VARCHAR
-    length: 32
-    rules: [PK]
+    typ: VARCHAR
+    len: 32
+    rul: [PK]
 
   Content:
-    type: TEXT
-    length: NULL
-    rules: [UNICODE, UTF-8]
+    typ: TEXT
+    len: NULL
+    rul: [UNICODE, UTF-8]
 
   Type:
-    type: VARCHAR
-    length: 32
-    rules: [UNICODE, UTF-8]
+    typ: VARCHAR
+    len: 32
+    rul: [UNICODE, UTF-8]
 
   EventId:
-    type: VARCHAR
-    length: 32
-    rules: [FK]
+    typ: VARCHAR
+    len: 32
+    rul: [FK]
 
-Attendance:
-  AttenId:
-    type: VARCHAR
-    length: 32
-    rules: [PK]
+Forms:
+  FormId:
+    typ: VARCHAR
+    len: 32
+    rul: [PK]
 
   CreatedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: []
+    typ: TIMESTAMP
+    len: NULL
+    rul: [DEFAULT_NOW]
 
-  UpdatedAt:
-    type: TIMESTAMP
-    length: NULL
-    rules: []
+  EventId:
+    typ: VARCHAR
+    len: 32
+    rul: [FK]
+
+Tools:
+  ToolId:
+    typ: VARCHAR
+    len: 32
+    rul: [PK]
+
+  Name:
+    typ: VARCHAR
+    len: 50
+    rul: [NOT_NULL]
+
+  Status:
+    typ: INTEGER
+    len: 1
+    rul: [NOT_NULL]
+
+  FormId:
+    typ: VARCHAR
+    len: 32
+    rul: [FK]
+
+People:
+  PersonId:
+    typ: VARCHAR
+    len: 32
+    rul: [PK]
+
+  Firstname:
+    typ: VARCHAR
+    len: 25
+    rul: [NOT_NULL]
+
+  Lastname:
+    typ: VARCHAR
+    len: 30
+    rul: [NOT_NULL]
+
+  Type:
+    typ: INTEGER
+    len: 1
+    rul: [NOT_NULL]
+
+  CorpName:
+    typ: VARCHAR
+    len: 50
+    rul: [NOT_NULL]
+
+  FormId:
+    typ: VARCHAR
+    len: 32
+    rul: [FK]
