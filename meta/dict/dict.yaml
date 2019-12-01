@@ -9,7 +9,12 @@ Users:
     len: 12
     rul: [NOT_NULL, UNIQUE]
 
-  Name:
+  Firstname:
+    typ: VARCHAR
+    len: 30
+    rul: [UNICODE, UTF-8, NO_SPECIAL_CHARS]
+
+  Lastname:
     typ: VARCHAR
     len: 30
     rul: [UNICODE, UTF-8, NO_SPECIAL_CHARS]
@@ -19,9 +24,29 @@ Users:
     len: 9
     rul: [NOT_NULL, UNIQUE]
 
-  Address:
+  Street:
     typ: VARCHAR
     len: 50
+    rul: [NOT_NULL]
+
+  HouseNumber:
+    typ: VARCHAR
+    len: 8
+    rul: [NOT_NULL]
+
+  City:
+    typ: VARCHAR
+    len: 25
+    rul: [NOT_NULL]
+
+  State:
+    typ: VARCHAR
+    len: 30
+    rul: [NOT_NULL]
+
+  Country:
+    typ: VARCHAR
+    len: 30
     rul: [NOT_NULL]
 
   Type:
