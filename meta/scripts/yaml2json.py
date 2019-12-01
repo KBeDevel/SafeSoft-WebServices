@@ -26,7 +26,7 @@ try:
 
     try:
 
-        file = open(git_root+'/src/dict/dict.yaml')
+        file = open(git_root+'/meta/dict/dict.yaml')
 
         if file is None or len(str(file)) is 0 : raise Exception("Error getting YAML file")
 
@@ -36,7 +36,7 @@ try:
             
             with file as yml_file : data = yaml.load(yml_file)
 
-            with open(git_root+'/src/dict/dict.json', 'w') as outfile : json.dump(data, outfile, indent=4)
+            with open(git_root+'/meta/dict/dict.json', 'w') as outfile : json.dump(data, outfile, indent=4)
 
         except : print("Error dumping items")
 

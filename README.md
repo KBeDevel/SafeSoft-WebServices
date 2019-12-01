@@ -24,13 +24,13 @@ Revisa las dependencias de *Composer* en [composer.json](https://github.com/KBeD
 
 ## Metadata
 
-- [PHP](https://www.php.net/downloads.php) 7.3.10
-- [Composer](https://getcomposer.org/download/) 1.9.0
-- [MySQL](https://dev.mysql.com/downloads/mysql/) 8.0.18
-- [Python](https://www.python.org/downloads/) 3.7.4
-- [PIP](https://pip.pypa.io/en/stable/installing/) 19.0.3
-- [Node](https://nodejs.org/en/download/) 10.16.3
-- [Code](https://code.visualstudio.com/Download) 1.39.2
+- [PHP](https://www.php.net/downloads.php) >= 7.3.10
+- [Composer](https://getcomposer.org/download/) >= 1.9.0
+- [MySQL](https://dev.mysql.com/downloads/mysql/) >= 8.0.18
+- [Python](https://www.python.org/downloads/) >= 3.7.4
+- [PIP](https://pip.pypa.io/en/stable/installing/) >= 19.0.3
+- [Node](https://nodejs.org/en/download/) >= 10.16.3
+- [Code](https://code.visualstudio.com/Download) >= 1.39.2
 
 ## Documentación
 
