@@ -19,8 +19,14 @@ class Auth {
     }
 
     private function filter_criteria($id, $criteria, $key){
+        $outer_array = array(
+            "hasErrors" => true,
+            "token" => null,
+            "error" => null
+        );
+
         if (is_null($criteria, $key)) {
-            return "";
+            $outer_array['error'] = "Criteria and/or key are not defined";
         }
 
         if (is_null($id)) {
@@ -36,6 +42,8 @@ class Auth {
         } else {
             return "";
         }
+
+        return $outer_array;
     }
 
     private function validate_token($token) {
@@ -47,11 +55,11 @@ class Auth {
 
         $stmt = mysqli_stmt_init($connector);
 
-        mysqli_stmt_prepare($stmt, "SELECT * FROM `USERS` WHERE Token = ?");
+        mysqli_stmt_prepare($stmt, "SELECT Email FROM `USERS` WHERE Token = ?");
         mysqli_stmt_bind_param($stmt, 's', $token);
 
         if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_bind_result($stmt, $val);
+            mysqli_stmt_bind_result($stmt, $email);
             mysqli_stmt_fetch($stmt);
 
 

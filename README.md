@@ -28,10 +28,11 @@ Revisa las dependencias de *Composer* en [composer.json](https://github.com/KBeD
 - [Composer](https://getcomposer.org/download/) >= 1.9.0
 - [MySQL](https://dev.mysql.com/downloads/mysql/) >= 8.0.18
 - [Python](https://www.python.org/downloads/) >= 3.7.4
+- [Ruby](https://www.ruby-lang.org/en/downloads/) >= 2.6.5
 - [PIP](https://pip.pypa.io/en/stable/installing/) >= 19.0.3
 - [Node](https://nodejs.org/en/download/) >= 10.16.3
 - [Code](https://code.visualstudio.com/Download) >= 1.39.2
 
-## Documentación
+<!-- ## Documentación
 
-Revisa la documentación [aquí](https://kbedeveloper.github.io/SafeSoft-WebServices)
+Revisa la documentación [aquí](https://kbedeveloper.github.io/SafeSoft-WebServices) -->
