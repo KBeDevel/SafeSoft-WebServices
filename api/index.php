@@ -1,8 +1,8 @@
 <?php
 
-require_once 'common/Headers.php';
-require_once 'classes/Request.php';
-require_once 'classes/Router.php';
+require_once './shared/Headers.php';
+require_once './classes/Request.php';
+require_once './classes/Router.php';
 // require_once 'classes/Auth.php';
 
 $router = new Router(new Request);
@@ -29,7 +29,11 @@ $router->get('/user', function($request) {
 });
 
 # POST requests
-$router->post('/auth', function($request) {
+$router->post('/user/insert', function($request) {
+    return json_encode($request->getBody());
+});
+
+$router->post('/user/update', function($request) {
     return json_encode($request->getBody());
 });
 

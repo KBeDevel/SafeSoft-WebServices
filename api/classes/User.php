@@ -38,13 +38,13 @@ class User {
         'corp' => 1,
         'medic' => 2,
         'supervisor' => 3,
-        'tecnical_speciaist' => 4,
+        'tecnical_specialist' => 4,
         'admin' => 5,
         'engineer' => 6
     );
 
     function __construct() {
-        
+        $this->possible_types_code = null;
     }
 }
 

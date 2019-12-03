@@ -1,3 +1,5 @@
+#!/bin/node
+
 const json = require('../dict/dict.json');
 const fs = require('fs');
 

@@ -91,14 +91,6 @@
                 "UNIQUE"
             ]
         },
-        "Username": {
-            "typ": "VARCHAR",
-            "len": 25,
-            "rul": [
-                "NOT_NULL",
-                "UNIQUE"
-            ]
-        },
         "Pass": {
             "typ": "VARCHAR",
             "len": 64,
@@ -156,6 +148,13 @@
             "len": 32,
             "rul": [
                 "PK"
+            ]
+        },
+        "SupervisorCorp": {
+            "typ": "VARCHAR",
+            "len": 50,
+            "rul": [
+                "NOT_NULL"
             ]
         },
         "Type": {
@@ -226,29 +225,6 @@
             ]
         }
     },
-    "Forms": {
-        "FormId": {
-            "typ": "VARCHAR",
-            "len": 32,
-            "rul": [
-                "PK"
-            ]
-        },
-        "CreatedAt": {
-            "typ": "TIMESTAMP",
-            "len": null,
-            "rul": [
-                "DEFAULT_NOW"
-            ]
-        },
-        "EventId": {
-            "typ": "VARCHAR",
-            "len": 32,
-            "rul": [
-                "FK"
-            ]
-        }
-    },
     "Tools": {
         "ToolId": {
             "typ": "VARCHAR",
@@ -271,51 +247,7 @@
                 "NOT_NULL"
             ]
         },
-        "FormId": {
-            "typ": "VARCHAR",
-            "len": 32,
-            "rul": [
-                "FK"
-            ]
-        }
-    },
-    "People": {
-        "PersonId": {
-            "typ": "VARCHAR",
-            "len": 32,
-            "rul": [
-                "PK"
-            ]
-        },
-        "Firstname": {
-            "typ": "VARCHAR",
-            "len": 25,
-            "rul": [
-                "NOT_NULL"
-            ]
-        },
-        "Lastname": {
-            "typ": "VARCHAR",
-            "len": 30,
-            "rul": [
-                "NOT_NULL"
-            ]
-        },
-        "Type": {
-            "typ": "INTEGER",
-            "len": 1,
-            "rul": [
-                "NOT_NULL"
-            ]
-        },
-        "CorpName": {
-            "typ": "VARCHAR",
-            "len": 50,
-            "rul": [
-                "NOT_NULL"
-            ]
-        },
-        "FormId": {
+        "EventId": {
             "typ": "VARCHAR",
             "len": 32,
             "rul": [

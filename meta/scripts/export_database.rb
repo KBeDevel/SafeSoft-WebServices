@@ -1,4 +1,4 @@
-#! /bin/ruby
+#!/bin/ruby
 
 path = %x[git rev-parse --show-toplevel]
 

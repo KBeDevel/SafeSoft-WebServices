@@ -1,5 +1,4 @@
-#! /usr/bin/env python3
-#! c:/Python/ python
+#!/bin/python
 
 """
 AUTHOR:  KBeDeveloper (https://github.com/KBeDeveloper), (https://gitlab.com/KBeDeveloper)

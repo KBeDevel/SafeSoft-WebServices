@@ -8,7 +8,6 @@ class Auth {
 
     private $valid_criteria = array(
         "token",
-        "username",
         "email"
     );
 
@@ -67,6 +66,10 @@ class Auth {
 
             
         }
+    }
+
+    public function autheticate(&$data) {
+        return false;
     }
 };
 
