@@ -5,6 +5,7 @@ require_once __DIR__.'/./classes/Request.php';
 require_once __DIR__.'/./classes/Router.php';
 require_once __DIR__.'/./classes/Auth.php';
 require_once __DIR__.'/./classes/User.php';
+require_once __DIR__.'/./classes/Event.php';
 
 $router = new Router(new Request);
 
@@ -64,17 +65,24 @@ $router->get('/user/rut/{rut}', function ($request) {
     return json_encode($user->getByRut((String)$request->params->rut));
 });
 
-$router->get('/user/delete/{code}', function ($request) {
-    $user = new User();
+// $router->get('/user/delete/{code}', function ($request) {
+//     $user = new User();
 
-    return json_encode($user->getByRut((String)$request->params->code));
-});
+//     return json_encode($user->getByRut((String)$request->params->code));
+// });
 
 // USER BY TOKEN
 $router->get('/token/{token}', function ($request) {
     $user = new User();
 
     return json_encode($user->get(" ", (String)$request->params->token));
+});
+
+// EVENT
+$router->get('/event/{id}', function ($request) {
+    $user = new Event();
+
+    return json_encode($user->get((String)$request->params->id));
 });
 
 
@@ -87,6 +95,8 @@ $router->post('/auth', function($request) {
     return json_encode($auth->authenticate());
 });
 
+
+// USERS
 $router->post('/user/create', function($request) {
     $user = new User();
 
@@ -95,8 +105,17 @@ $router->post('/user/create', function($request) {
     return json_encode($outer_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 });
 
-$router->post('/user/update', function($request) {
-    return json_encode($request->getBody());
+// $router->post('/user/update', function($request) {
+//     return json_encode($request->getBody());
+// });
+
+// EVENTS
+$router->post('/event/create', function($request) {
+    $event = new Event();
+
+    $outer_data = $event->create($request->getBody());
+    
+    return json_encode($outer_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 });
 
 ?>
