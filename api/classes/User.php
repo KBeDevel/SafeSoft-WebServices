@@ -1,30 +1,20 @@
 <?php
 
+include_once __DIR__.'/../shared/Connector.php';
+include_once __DIR__.'/../shared/Strings.php';
+
 class User {
 
-    private $code;
-    private $rut;
-    private $firstname;
-    private $lastname;
-    private $phone;
-    private $street;
-    private $house_number;
-    private $city;
-    private $state;
-    private $country;
-    private $type;
-    private $email;
-    private $pass;
-    private $parent_org;
+    private $connector;
 
     private $possible_types_prefix = array(
-        "EM",
-        "CO",
-        "ME",
-        "SV",
-        "TS",
-        "AD",
-        "EG"
+        "EM" => "employee",
+        "CO" => "corp",
+        "ME" => "medic",
+        "SV" => "supervisor",
+        "TS" => "technical_specialist",
+        "AD" => "admin",
+        "EG" => "engineer"
     );
 
     private $possible_types_code = array(
@@ -37,10 +27,126 @@ class User {
         'engineer' => 6
     );
 
-    function __construct(){
-        $this->code = $code;
-        
+    public function __construct(){
+        $this->connector = Connector::getConnector();
     }
+
+    public function getByRut($rut){
+        $query = mysqli_query($this->connector, "SELECT * FROM `USERS` WHERE RUT LIKE '%$rut'");
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+        return $result;
+    }
+
+    public function get($code, $token) {
+
+        $query = mysqli_query($this->connector, "SELECT * FROM `USERS` WHERE Code LIKE '%$code' OR Token LIKE '%$token'");
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+        return $result;
+    }
+
+    public function create($data) {
+
+        $out_data = array(
+            'error' => null,
+            'user_code' => null,
+            'user_token' => null,
+        );
+        
+        $stmt = mysqli_stmt_init($this->connector);
+
+        do {
+            $code_exists = true;
+
+            mysqli_stmt_prepare($stmt, "SELECT Email FROM `USERS` WHERE Code = ?");
+
+            $generated_code = Strings::generateRandomString(6);
+
+            mysqli_stmt_bind_param($stmt, 's', $generated_code);
+
+            if (mysqli_stmt_execute($stmt)) {
+
+                mysqli_stmt_bind_result($stmt, $temp_email);
+                mysqli_stmt_fetch($stmt);
+
+                if ($temp_email == null) {
+                    $code_exists = false;
+                }
+            }
+
+        } while ($code_exists);
+
+        do {
+            $token_exists = true;
+
+            mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
+
+            $generated_token = Strings::generateRandomString(32);
+
+            mysqli_stmt_bind_param($stmt, 's', $generated_token);
+
+            if (mysqli_stmt_execute($stmt)) {
+
+                mysqli_stmt_bind_result($stmt, $temp_code);
+                mysqli_stmt_fetch($stmt);
+
+                if ($temp_code == null) {
+                    $token_exists = false;
+                }
+            }
+
+        } while ($token_exists);
+
+        $temp_code_type = null;
+
+        if (in_array($data['type'], $this->possible_types_code)) {
+            foreach ($this->possible_types_code as $key => $value) {
+                if ($value === (int)$data['type']) {
+                    $temp_code_type = $key;
+                }                
+            }
+        }
+
+        if ($temp_code_type != null) {
+
+            $temp_code_prefix = null;
+
+            if (in_array($temp_code_type, $this->possible_types_prefix)) {
+                foreach ($this->possible_types_prefix as $key => $value) {
+                    if ($value === $temp_code_type) {
+                        $temp_code_prefix = $key;
+                    }
+                }
+            }
+
+            if ($temp_code_prefix != null) {
+
+                $generated_code = $temp_code_prefix . "-" . $generated_code;
+
+                mysqli_stmt_prepare($stmt, "INSERT INTO `USERS` (`Code`, `RUT`, `Firstname`, `Lastname`, `Phone`, `Street`, `HouseNumber`, `City`, `State`, `Country`, `Type`, `Email`, `Pass`, `Token`, `TokenTime`, `CreatedAt`, `UpdatedAt`, `LoggedAt`, `ParentOrg`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, ?)");
+
+                mysqli_stmt_bind_param($stmt, 'ssssisssssisss', $generated_code, $data['rut'], $data['firstname'], $data['lastname'], $data['phone'], $data['street'], $data['house_number'], $data['city'], $data['state'], $data['country'], $data['type'], $data['email'], $data['pass'], $generated_token, $data['parent_org']);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    $out_data['user_code'] = $generated_code;
+                    $out_data['user_token'] = $generated_token;
+                } else {
+                    $out_data['error'] = mysqli_error($this->connector);
+                }
+
+            } else {
+                $out_data['error'] = "Internal server error";
+            }            
+        } else {
+            $out_data['error'] = "User type is not correct";
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connector);
+     
+        return $out_data;
+    }    
 
 }
 

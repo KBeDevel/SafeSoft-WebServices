@@ -73,12 +73,12 @@ class Auth {
             mysqli_stmt_fetch($stmt);
 
             if ($code != null) {
-                if (is_null($token)) {
-
-                    mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
+                if (is_null($token)) {                    
 
                     do {
                         $token_exists = true;
+
+                        mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
 
                         $generated_token = Strings::generateRandomString(32);
 
