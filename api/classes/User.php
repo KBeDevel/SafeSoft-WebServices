@@ -85,7 +85,9 @@ class User {
 
                 $generated_code = Strings::generateRandomString(6);
 
-                mysqli_stmt_bind_param($stmt, 's', $temp_code_prefix . "-" .$generated_code);
+                $temp_user_code = $temp_code_prefix . "-" .$generated_code;
+
+                mysqli_stmt_bind_param($stmt, 's', $temp_user_code);
 
                 if (mysqli_stmt_execute($stmt)) {
 
