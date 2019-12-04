@@ -33,29 +33,29 @@ sql_stmt.references = "REFERENCES";
 sql_stmt.break_line = "\n";
 sql_stmt.tab = "    ";
 
-def_header += "/*" + sql_stmt.break_line;
-def_header += " * THIS SCRIPT WAS GENERATED AUTMATICALLY FROM NODE JS (By KBeDeveloper)" + sql_stmt.break_line;
-def_header += " */" + sql_stmt.break_line;
+def_header += sql_stmt.break_line;
+def_header += "-- THIS SCRIPT WAS GENERATED AUTMATICALLY FROM NODE JS (By KBeDeveloper)" + sql_stmt.break_line;
+def_header += sql_stmt.break_line;
 
 
-if ( _SQL.length === 0 ) {
+if ( _SQL.length == 0 ) {
     _SQL += def_header;
     _SQL += sql_stmt.break_line;
-    _SQL += sql_stmt.if_exists + " " + sql_stmt.drop + " " + sql_stmt.database + " " + db.name + ";" + sql_stmt.break_line;
-    _SQL += sql_stmt.if_not_exists + " " + sql_stmt.create + " " + sql_stmt.database + " " + db.name + " " + sql_stmt.collation + ";" + sql_stmt.break_line;
+    _SQL += sql_stmt.drop + " " + sql_stmt.database + " " + sql_stmt.if_exists + " " + db.name + ";" + sql_stmt.break_line;
+    _SQL += sql_stmt.create + " " + sql_stmt.database + " " + sql_stmt.if_not_exists + " " + db.name + " " + sql_stmt.collation + ";" + sql_stmt.break_line;
     _SQL += sql_stmt.use + " " + db.name + ";" + sql_stmt.break_line;
     _SQL += sql_stmt.break_line;
 }
 
 for ( let key in json ) {
 
-    _SQL += sql_stmt.if_not_exists + " " + sql_stmt.create + " " + sql_stmt.table + " " + key.toUpperCase() + " (" + sql_stmt.break_line;
+    _SQL += sql_stmt.create + " " + sql_stmt.table + " " + sql_stmt.if_not_exists + " " + key.toUpperCase() + " (" + sql_stmt.break_line;
     
     for ( let sub_key in json[key] ) {
 
         var column_comment = ",  -- ";
 
-        _SQL += sql_stmt.tab + "`" + sub_key + "` ";
+        _SQL += sql_stmt.break_line + sql_stmt.tab + "`" + sub_key + "` ";
         
         for ( let prop in json[key][sub_key] ) {
 
@@ -103,19 +103,26 @@ for ( let key in json ) {
                 }
 
                 if ( column_comment === ',  -- ' ) {
-                    _SQL += "," + sql_stmt.break_line;
+                    _SQL += ",";
                 } else {
-                    _SQL += column_comment + sql_stmt.break_line;
+                    _SQL += column_comment;
                 }               
 
             }
 
-        }        
+        }
 
     }
 
-    _SQL += ") " + sql_stmt.storage_engine_inno + ";" + sql_stmt.break_line + sql_stmt.break_line;
+    _SQL = _SQL.substring(0, _SQL.length - 1) + sql_stmt.break_line + ") " + sql_stmt.storage_engine_inno + ";" + sql_stmt.break_line + sql_stmt.break_line;
 }
+
+_SQL += sql_stmt.break_line;
+_SQL += "ALTER TABLE EVENTS ADD CONSTRAINT FK_EVENTS_UserCode FOREIGN KEY (UserCode) REFERENCES USERS(Code);";
+_SQL += sql_stmt.break_line;
+_SQL += "ALTER TABLE COMMENTS ADD CONSTRAINT FK_COMMENTS_EventId FOREIGN KEY (EventId) REFERENCES EVENTS(EventId);";
+_SQL += sql_stmt.break_line;
+_SQL += "ALTER TABLE TOOLS ADD CONSTRAINT FK_TOOLS_EventId FOREIGN KEY (EventId) REFERENCES EVENTS(EventId);";
 
 fs.writeFile('./database.sql', _SQL, (err) => {
     if ( err ) throw err

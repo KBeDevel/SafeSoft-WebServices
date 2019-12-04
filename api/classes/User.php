@@ -14,13 +14,7 @@ class User {
     private $country;
     private $type;
     private $email;
-    private $username;
     private $pass;
-    private $token;
-    private $token_time;
-    private $created_at;
-    private $updated_at;
-    private $logged_at;
     private $parent_org;
 
     private $possible_types_prefix = array(
@@ -43,9 +37,11 @@ class User {
         'engineer' => 6
     );
 
-    function __construct() {
-        $this->possible_types_code = null;
+    function __construct(){
+        $this->code = $code;
+        
     }
+
 }
 
 ?>

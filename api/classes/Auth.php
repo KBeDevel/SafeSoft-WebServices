@@ -1,58 +1,45 @@
 <?php
 
+include_once __DIR__.'/../shared/Strings.php';
+include_once __DIR__.'/../shared/Connector.php';
+
 class Auth {
 
     private $unique_id;
     private $key;
     private $criteria;
+    private $connector;
 
     private $valid_criteria = array(
         "token",
         "email"
     );
 
-    function __construct($unique_id, $key, $criteria) {
+    public function __construct($unique_id, $key, $criteria) {
         $this->unique_id = $unique_id;
         $this->key = $key;
         $this->criteria = $criteria;
+        $this->connector = Connector::getConnector();
     }
 
-    private function filter_criteria($id, $criteria, $key){
-        $outer_array = array(
-            "hasErrors" => true,
-            "token" => null,
-            "error" => null
-        );
+    private function validate_criteria($criteria){
 
-        if (is_null($criteria, $key)) {
-            $outer_array['error'] = "Criteria and/or key are not defined";
-        }
-
-        if (is_null($id)) {
-            if (!in_array(strtolower($criteria), $this->valid_criteria)) {
-                return "";
-            } else {
-                if ($this->validate_token($key)) {
-
-                } else {
-                    return "";
-                }
-            }
+        if (is_null($criteria)) {
+            return false;
         } else {
-            return "";
+            if (!in_array(strtolower($criteria), $this->valid_criteria)) {
+                return false;
+            } else {
+                return true;
+            }
         }
-
-        return $outer_array;
     }
 
     private function validate_token($token) {
 
         $valid_query = false;
-        $response = array();
 
-        include_once '../common/Connector.php';
-
-        $stmt = mysqli_stmt_init($connector);
+        $stmt = mysqli_stmt_init($this->connector);
 
         mysqli_stmt_prepare($stmt, "SELECT Email FROM `USERS` WHERE Token = ?");
         mysqli_stmt_bind_param($stmt, 's', $token);
@@ -61,39 +48,110 @@ class Auth {
             mysqli_stmt_bind_result($stmt, $email);
             mysqli_stmt_fetch($stmt);
 
-
-        } else {
-
-            
+            if ($email != null) {
+                $valid_query = true;
+            }
         }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connector);
+
+        return $valid_query;
     }
 
-    public function autheticate(&$data) {
-        return false;
+    private function login($id, $key) {
+        $token = null;
+
+        $stmt = mysqli_stmt_init($this->connector);
+
+        mysqli_stmt_prepare($stmt, "SELECT Code, Token FROM `USERS` WHERE Email = ? AND Pass = ?");
+        mysqli_stmt_bind_param($stmt, 'ss', $id, $key);
+
+
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_bind_result($stmt, $code, $token);
+            mysqli_stmt_fetch($stmt);
+
+            if ($code != null) {
+                if (is_null($token)) {
+
+                    mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
+
+                    do {
+                        $token_exists = true;
+
+                        $generated_token = Strings::generateRandomString(32);
+
+                        mysqli_stmt_bind_param($stmt, 's', $generated_token);
+
+                        if (mysqli_stmt_execute($stmt)) {
+
+                            mysqli_stmt_bind_result($stmt, $temp_code);
+                            mysqli_stmt_fetch($stmt);
+
+                            if ($temp_code == null) {
+                                $token_exists = false;
+                            }
+                        }
+
+                    } while ($token_exists);
+
+                    if (!is_null($generated_token)) {
+
+                        mysqli_stmt_prepare($stmt, "UPDATE `USERS` SET Token = ?, TokenTime = CURRENT_TIMESTAMP, UpdatedAt = CURRENT_TIMESTAMP, LoggedAt = CURRENT_TIMESTAMP WHERE Code = ?");
+                        mysqli_stmt_bind_param($stmt, 'ss', $generated_token, $code);
+
+                        if (mysqli_stmt_execute($stmt)) {
+
+                            $token = $generated_token;
+                        }
+                    }
+                }
+            }
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connector);
+
+        return $token;
     }
-};
 
-# REQUEST DATA [POST]
-#
-# URL: https://pftsafesoft.000webhostapp.com/api/auth/Authenticate.php?id=dG9wb2NvbmFsZXJnaWE=&criteria=username&pass=ZTBlNjA5N2E2ZjhhZjA3ZGFmNWZjNzI0NDMzNmJhMzcxMzM3MTNhOGZjNzM0NWMzNmQ2NjdkZmE1MTNmYWJhYQ==
-#
-# id=dG9wb2NvbmFsZXJnaWE=
-# criteria=username
-# pass=ZTBlNjA5N2E2ZjhhZjA3ZGFmNWZjNzI0NDMzNmJhMzcxMzM3MTNhOGZjNzM0NWMzNmQ2NjdkZmE1MTNmYWJhYQ==
-#
+    public function authenticate() {
+        $id = $this->unique_id;
+        $criteria = $this->criteria;
+        $key = $this->key;
 
-# RESPONSE [IDEAL]:
-#
-# {
-#   "hasErrors" : false,
-#   "token" : "VMwx8AWlmKQ1PzG4xUbdIIGYeq1HHD5d" 
-# }
+        $outer_array = array(
+            "hasErrors" => true,
+            "token" => null,
+            "error" => null,
+        );
 
-# RESPONSE [WRONG]:
-#
-# {
-#   "hasErrors" : true,
-#   "error" : "Error message"
-# }
+        if ($this->validate_criteria($criteria)) {
+            if ($criteria !== "token") {
+
+                $token = $this->login($id, $key);
+
+                if ($token != null) {
+                    $outer_array['token'] = $token;
+                    $outer_array['hasErrors'] = false;
+                } else {
+                    $outer_array['error'] = "Not valid credentials";
+                }
+            } else {
+                if ($this->validate_token($key)) {
+                    $outer_array['token'] = $key;
+                    $outer_array['hasErrors'] = false;
+                } else {
+                    $outer_array['error'] = "Token not valid";
+                }
+            }
+        } else {
+            $outer_array['error'] = "Not valid criteria";
+        }
+
+        return $outer_array;
+    }
+}
 
 ?>
