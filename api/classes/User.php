@@ -53,50 +53,6 @@ class User {
             'user_code' => null,
             'user_token' => null,
         );
-        
-        $stmt = mysqli_stmt_init($this->connector);
-
-        do {
-            $code_exists = true;
-
-            mysqli_stmt_prepare($stmt, "SELECT Email FROM `USERS` WHERE Code = ?");
-
-            $generated_code = Strings::generateRandomString(6);
-
-            mysqli_stmt_bind_param($stmt, 's', $generated_code);
-
-            if (mysqli_stmt_execute($stmt)) {
-
-                mysqli_stmt_bind_result($stmt, $temp_email);
-                mysqli_stmt_fetch($stmt);
-
-                if ($temp_email == null) {
-                    $code_exists = false;
-                }
-            }
-
-        } while ($code_exists);
-
-        do {
-            $token_exists = true;
-
-            mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
-
-            $generated_token = Strings::generateRandomString(32);
-
-            mysqli_stmt_bind_param($stmt, 's', $generated_token);
-
-            if (mysqli_stmt_execute($stmt)) {
-
-                mysqli_stmt_bind_result($stmt, $temp_code);
-                mysqli_stmt_fetch($stmt);
-
-                if ($temp_code == null) {
-                    $token_exists = false;
-                }
-            }
-
-        } while ($token_exists);
 
         $temp_code_type = null;
 
@@ -119,6 +75,51 @@ class User {
                     }
                 }
             }
+        
+            $stmt = mysqli_stmt_init($this->connector);
+
+            do {
+                $code_exists = true;
+
+                mysqli_stmt_prepare($stmt, "SELECT Email FROM `USERS` WHERE Code = ?");
+
+                $generated_code = Strings::generateRandomString(6);
+
+                mysqli_stmt_bind_param($stmt, 's', $temp_code_prefix . "-" .$generated_code);
+
+                if (mysqli_stmt_execute($stmt)) {
+
+                    mysqli_stmt_bind_result($stmt, $temp_email);
+                    mysqli_stmt_fetch($stmt);
+
+                    if ($temp_email == null) {
+                        $code_exists = false;
+                    }
+                }
+
+            } while ($code_exists);
+
+            do {
+                $token_exists = true;
+
+                mysqli_stmt_prepare($stmt, "SELECT Code FROM `USERS` WHERE Token = ?");
+
+                $generated_token = Strings::generateRandomString(32);
+
+                mysqli_stmt_bind_param($stmt, 's', $generated_token);
+
+                if (mysqli_stmt_execute($stmt)) {
+
+                    mysqli_stmt_bind_result($stmt, $temp_code);
+                    mysqli_stmt_fetch($stmt);
+
+                    if ($temp_code == null) {
+                        $token_exists = false;
+                    }
+                }
+
+            } while ($token_exists);
+        
 
             if ($temp_code_prefix != null) {
 
