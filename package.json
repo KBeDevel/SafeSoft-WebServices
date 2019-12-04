@@ -1,6 +1,6 @@
 {
   "name": "safesoft-webservices",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Web Service Layer for SafeSoft (PFT-C5)",
   "main": "index.js",
   "directories": {

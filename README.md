@@ -26,9 +26,9 @@ Revisa las dependencias de **Composer** en [composer.json](https://github.com/KB
 
 - [Apache 2](https://httpd.apache.org/download.cgi) >= 2.4.41 *(Imprescindible para levantar instancia de servidor)*
 - [PHP](https://www.php.net/downloads.php) >= 7.3.10 *(Necesario para levantar servicio)*
-- [Composer](https://getcomposer.org/download/) >= 1.9.0 *(Necesario para mantención de librerías y dependencias de PHP)*
 - [MySQL](https://dev.mysql.com/downloads/mysql/) >= 8.0.18 *(Necesario para levantar instancia de base de datos)*
 - [OpenSSL](https://www.openssl.org/source/) >= 1.1.1 *(Necesario para instancia de servidor de PHP)*
+- [Composer](https://getcomposer.org/download/) >= 1.9.0 *(Opcional. Útil para mantención de librerías y dependencias de PHP)*
 - [Python](https://www.python.org/downloads/) >= 3.7.4 *(Opcional. Útil para ejecución de script)*
 - [Ruby](https://www.ruby-lang.org/en/downloads/) >= 2.6.5 *(Opcional. Útil para ejecución de script)*
 - [Node](https://nodejs.org/en/download/) >= 10.16.3 *(Opcional. Útil para ejecución de script)*
@@ -80,6 +80,12 @@ $ sudo service mysqld start
 - PHP instalado
 - Paquetes de despliegue de servidor IIS de Visual Studio 2017 o superior
 
+### Descarga
+
+```powershell
+> git clone https://github.com/KBeDeveloper/SafeSoft-WebServices
+```
+
 ### Ejecución
 
 En el directorio del repositorio actual, abrir una ventana de PowerShell, como administrador, o el cliente CLI de PHP y ejecutar:
@@ -92,4 +98,13 @@ O, en su defecto:
 
 ```powershell
 > php -S localhost:8000 -t public
+```
+
+#### IMPORTANTE:
+
+Si no tienes añadido PHP al PATH del sistema, debes ejecutarlo de la siguiente forma (desde el drectorio del proyecto):
+
+```powershell
+> cd SafeSoft\-WebServices/api
+> c:/path/to/php.exe -S localhost:8000
 ```

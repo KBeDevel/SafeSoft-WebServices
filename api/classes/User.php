@@ -45,6 +45,78 @@ class User {
 
         return $result;
     }
+    
+    public function delete($code) {
+
+        $out_data = array();
+
+        $stmt = mysqli_stmt_init($this->connection);
+
+        mysqli_stmt_prepare($stmt, "SELECT EventId FROM `EVENTS` WHERE UserCode = ?");
+        mysqli_stmt_bind_param($stmt, 's', $code);
+
+        if (mysqli_stmt_execute($stmt)) {
+
+            mysqli_stmt_bind_result($stmt, $event_id);
+    
+            while (mysqli_stmt_fetch($stmt)) {
+                $temp = array();
+                $temp["event_id"] = $event_id;
+                $temp_events[] = $temp;
+            }
+        }
+
+        foreach ( $temp_events as $key => $value ) {
+            $collateral_data_removed = false;
+
+            mysqli_stmt_prepare($stmt, "DELETE FROM TOOLS WHERE EventId = ?");
+            mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
+
+            if (mysqli_stmt_execute($stmt)) {
+
+                mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
+                mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
+
+                if (mysqli_stmt_execute($stmt)) {
+
+                    mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
+                    mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
+
+                    if (mysqli_stmt_execute($stmt)) {
+                        
+                        $collateral_data_removed = true;
+                    } else {
+
+                        $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                    }
+                } else {
+
+                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                }
+            } else {
+
+                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+            }
+        }
+
+        if ($collateral_data_removed) {
+            mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE Code = ?");
+            mysqli_stmt_bind_param($stmt, 's', $code);
+
+            if (mysqli_stmt_execute($stmt)) {
+
+                $out_data['error'] = "Deleted user with code: ".$code;
+            } else {
+
+                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+            }
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connection);
+
+        return $out_data;
+    }
 
     public function create($data) {
 

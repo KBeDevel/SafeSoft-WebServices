@@ -37,7 +37,48 @@ class Event {
                 $out_data['error'] = "Event doesn't exists";
             }
         } else {
-            $out_data['error'] = "Internal server error";
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connection);
+
+        return $out_data;
+    }
+
+    public function delete($id) {
+
+        $out_data = array();
+
+        $stmt = mysqli_stmt_init($this->connection);
+
+        mysqli_stmt_prepare($stmt, "DELETE FROM TOOLS WHERE EventId = ?");
+        mysqli_stmt_bind_param($stmt, 's', $id);
+
+        if (mysqli_stmt_execute($stmt)) {
+
+            mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
+            mysqli_stmt_bind_param($stmt, 's', $id);
+
+            if (mysqli_stmt_execute($stmt)) {
+
+                mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
+                mysqli_stmt_bind_param($stmt, 's', $id);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    
+                    $out_data['value'] = "Deleted Event with id: ".$id;
+                } else {
+
+                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                }
+            } else {
+
+                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+            }
+        } else {
+
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
         }
 
         mysqli_stmt_close($stmt);
@@ -70,6 +111,7 @@ class Event {
             }
 
             if ($temp_user_code == null) {
+
                 $event_exists = false;
             }
 
@@ -79,8 +121,10 @@ class Event {
         mysqli_stmt_bind_param($stmt, 'ssis', $generated_event_id, $data['supervisor'], $data['type'], $data['user_code']);
 
         if (mysqli_stmt_execute($stmt)) {
+
             $out_data['event_id'] = $generated_event_id;
         } else {
+
             $out_data['error'] = mysqli_error($this->connection);
         }
 

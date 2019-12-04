@@ -6,12 +6,12 @@ require_once __DIR__.'/./classes/Router.php';
 require_once __DIR__.'/./classes/Auth.php';
 require_once __DIR__.'/./classes/User.php';
 require_once __DIR__.'/./classes/Event.php';
+require_once __DIR__.'/./classes/Comment.php';
+require_once __DIR__.'/./classes/Tool.php';
 
 $router = new Router(new Request);
 
-# GET requests
-
-// $data['rut'], $data['firstname'], $data['lastname'], $data['phone'], $data['street'], $data['house_number'], $data['city'], $data['state'], $data['country'], $data['type'], $data['email'], $data['pass'], $generated_token, $data['parent_org']
+# GET
 
 // HOME
 $router->get('/', function() {
@@ -65,13 +65,13 @@ $router->get('/user/rut/{rut}', function ($request) {
     return json_encode($user->getByRut((String)$request->params->rut));
 });
 
-// $router->get('/user/delete/{code}', function ($request) {
-//     $user = new User();
+$router->get('/user/delete/{code}', function ($request) {
+    $user = new User();
 
-//     return json_encode($user->getByRut((String)$request->params->code));
-// });
+    return json_encode($user->delete((String)$request->params->code));
+});
 
-// USER BY TOKEN
+// TOKEN
 $router->get('/token/{token}', function ($request) {
     $user = new User();
 
@@ -80,11 +80,42 @@ $router->get('/token/{token}', function ($request) {
 
 // EVENT
 $router->get('/event/{id}', function ($request) {
-    $user = new Event();
+    $event = new Event();
 
-    return json_encode($user->get((String)$request->params->id));
+    return json_encode($event->get((String)$request->params->id));
 });
 
+$router->get('/event/delete/{id}', function ($request) {
+    $event = new Event();
+
+    return json_encode($event->delete((String)$request->params->id));
+});
+
+// COMMENT
+$router->get('/comment/{id}', function ($request) {
+    $comment = new Comment();
+
+    return json_encode($comment->get((String)$request->params->id));
+});
+
+$router->get('/comment/delete/{id}', function ($request) {
+    $comment = new Comment();
+
+    return json_encode($comment->delete((String)$request->params->id));
+});
+
+// TOOL
+$router->get('/tool/{id}', function($request) {
+    $tool = new Tool();
+
+    return json_encode($tool->get((String)$request->params->id));
+});
+
+$router->get('/tool/delete/{id}', function ($request) {
+    $tool = new Tool();
+
+    return json_encode($tool->delete((String)$request->params->id));
+});
 
 # POST requests
 $router->post('/auth', function($request) {
@@ -100,14 +131,8 @@ $router->post('/auth', function($request) {
 $router->post('/user/create', function($request) {
     $user = new User();
 
-    $outer_data = $user->create($request->getBody());
-    
-    return json_encode($outer_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    return json_encode($user->create($request->getBody()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 });
-
-// $router->post('/user/update', function($request) {
-//     return json_encode($request->getBody());
-// });
 
 // EVENTS
 $router->post('/event/create', function($request) {
@@ -116,6 +141,20 @@ $router->post('/event/create', function($request) {
     $outer_data = $event->create($request->getBody());
     
     return json_encode($outer_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+});
+
+// COMMENTS
+$router->post('/comment/create', function($request) {
+    $comment = new Comment();
+    
+    return json_encode($comment->create($request->getBody()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+});
+
+// TOOLS
+$router->post('/tool/create', function($request) {
+    $tool = new Tool();
+    
+    return json_encode($tool->create($request->getBody()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 });
 
 ?>
