@@ -48,6 +48,8 @@ class User {
     
     public function delete($code) {
 
+        $does_have_events = false;
+
         $out_data = array();
 
         $stmt = mysqli_stmt_init($this->connection);
@@ -58,21 +60,23 @@ class User {
         if (mysqli_stmt_execute($stmt)) {
 
             mysqli_stmt_bind_result($stmt, $event_id);
-
             $does_have_events = false;
+            $temp_events = mysqli_stmt_fetch($stmt);
+            mysqli_stmt_free_result($stmt);
+
+            if ($temp_events !== null) {
+
+                $does_have_events = true;
+
+                while ($temp_events) {
+                    if ($event_id !== null) {
     
-            while (mysqli_stmt_fetch($stmt)) {
-                if ($event_id !== null) {
-
-                    $temp = array();
-                    $temp["event_id"] = $event_id;
-                    $temp_events[] = $temp;
-
-                    $does_have_events = true;
+                        $temp = array();
+                        $temp["event_id"] = $event_id;
+                        $temp_events[] = $temp;                      
+                    }
                 }
             }
-
-            mysqli_stmt_free_result($stmt);
         }
 
         if ($does_have_events) {
@@ -111,29 +115,37 @@ class User {
                 }
             }
 
+            mysqli_stmt_close($stmt);
+            $stmt = mysqli_stmt_init($this->connector);
+
             if ($collateral_data_removed) {
                 mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE Code = ?");
                 mysqli_stmt_bind_param($stmt, 's', $code);
     
                 if (mysqli_stmt_execute($stmt)) {
     
-                    $out_data['error'] = "Deleted user with code: ".$code;
+                    $out_data['message'] = "Deleted user with code: ".$code;
                 } else {
     
                     $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
                 }
             }
+
         } else {
 
-            mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE Code = ?");
+            mysqli_stmt_close($stmt);
+            $stmt = mysqli_stmt_init($this->connector);
+
+            mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE `Code` = ?");
             mysqli_stmt_bind_param($stmt, 's', $code);
 
             if (mysqli_stmt_execute($stmt)) {
 
-                $out_data['error'] = "Deleted user with code: ".$code;
+                $out_data['message'] = "Deleted user with code: ".$code;
+
             } else {
 
-                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                $out_data['error'] = "Internal server error. ".mysqli_errno($this->connector)." - ".mysqli_error($this->connection);
             }
         }
 

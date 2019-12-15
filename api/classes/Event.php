@@ -5,17 +5,17 @@ include_once __DIR__.'/../shared/Strings.php';
 
 class Event {
 
-    private $connection;
+    private $connector;
 
     public function __construct() {
-        $this->connection = Connector::getConnector();
+        $this->connector = Connector::getConnector();
     }
 
     public function get($id) {
 
         $out_data = array();
 
-        $stmt = mysqli_stmt_init($this->connection);
+        $stmt = mysqli_stmt_init($this->connector);
 
         mysqli_stmt_prepare($stmt, "SELECT `SupervisorCorp`, `Type`, `CreatedAt`, `SubmittedAt`, `UserCode` FROM `EVENTS` WHERE EventId = ?");
         mysqli_stmt_bind_param($stmt, 's', $id);
@@ -37,11 +37,11 @@ class Event {
                 $out_data['error'] = "Event doesn't exists";
             }
         } else {
-            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
         }
 
         mysqli_stmt_close($stmt);
-        mysqli_close($this->connection);
+        mysqli_close($this->connector);
 
         return $out_data;
     }
@@ -50,17 +50,23 @@ class Event {
 
         $out_data = array();
 
-        $stmt = mysqli_stmt_init($this->connection);
+        $stmt = mysqli_stmt_init($this->connector);
 
         mysqli_stmt_prepare($stmt, "DELETE FROM TOOLS WHERE EventId = ?");
         mysqli_stmt_bind_param($stmt, 's', $id);
 
         if (mysqli_stmt_execute($stmt)) {
 
+            mysqli_stmt_close($stmt);
+            $stmt = mysqli_stmt_init($this->connector);
+
             mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
             mysqli_stmt_bind_param($stmt, 's', $id);
 
             if (mysqli_stmt_execute($stmt)) {
+
+                mysqli_stmt_close($stmt);
+                $stmt = mysqli_stmt_init($this->connector);
 
                 mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
                 mysqli_stmt_bind_param($stmt, 's', $id);
@@ -70,19 +76,19 @@ class Event {
                     $out_data['value'] = "Deleted Event with id: ".$id;
                 } else {
 
-                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
                 }
             } else {
 
-                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
             }
         } else {
 
-            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
         }
 
         mysqli_stmt_close($stmt);
-        mysqli_close($this->connection);
+        mysqli_close($this->connector);
 
         return $out_data;
     }
@@ -94,7 +100,7 @@ class Event {
             "error" => null,
         );
         
-        $stmt = mysqli_stmt_init($this->connection);
+        $stmt = mysqli_stmt_init($this->connector);
 
         do {
             $event_exists = true;
@@ -117,6 +123,9 @@ class Event {
 
         } while ($event_exists);
 
+        mysqli_stmt_close($stmt);
+        $stmt = mysqli_stmt_init($this->connector);
+
         mysqli_stmt_prepare($stmt, "INSERT INTO `EVENTS` (`EventId`, `SupervisorCorp`, `Type`, `CreatedAt`, `ClosedAt`, `SubmittedAt`, `UserCode`) VALUES ( ?, ?, ?, CURRENT_TIMESTAMP, NULL, CURRENT_TIMESTAMP, ?)");
         mysqli_stmt_bind_param($stmt, 'ssis', $generated_event_id, $data['supervisor'], $data['type'], $data['user_code']);
 
@@ -125,7 +134,7 @@ class Event {
             $out_data['event_id'] = $generated_event_id;
         } else {
 
-            $out_data['error'] = mysqli_error($this->connection);
+            $out_data['error'] = mysqli_error($this->connector);
         }
 
         return $out_data;
