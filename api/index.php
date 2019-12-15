@@ -1,5 +1,7 @@
 <?php
 
+error_reporting(E_ERROR | E_PARSE);
+
 require_once __DIR__.'/./shared/Headers.php';
 require_once __DIR__.'/./classes/Request.php';
 require_once __DIR__.'/./classes/Router.php';
@@ -56,7 +58,7 @@ $router->get('/', function() {
 $router->get('/user/{code}', function ($request) {
     $user = new User();
 
-    return json_encode($user->get((String)$request->params->code, " "));
+    return json_encode($user->get((String)$request->params->code, " ", JSON_UNESCAPED_UNICODE));
 });
 
 $router->get('/user/rut/{rut}', function ($request) {

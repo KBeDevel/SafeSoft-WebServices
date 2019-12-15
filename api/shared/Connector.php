@@ -3,6 +3,7 @@
 class Connector {
 
     public static function getConnector() {
+
         $dbhost	= "localhost";
         $dbuser	= "root";
         $dbpass	= base64_decode('TmluamFib3kyNDEwMTk5Ny8=');
