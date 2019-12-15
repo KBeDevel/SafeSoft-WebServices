@@ -58,33 +58,49 @@ class User {
         if (mysqli_stmt_execute($stmt)) {
 
             mysqli_stmt_bind_result($stmt, $event_id);
+
+            $does_have_events = false;
     
             while (mysqli_stmt_fetch($stmt)) {
-                $temp = array();
-                $temp["event_id"] = $event_id;
-                $temp_events[] = $temp;
+                if ($event_id !== null) {
+
+                    $temp = array();
+                    $temp["event_id"] = $event_id;
+                    $temp_events[] = $temp;
+
+                    $does_have_events = true;
+                }
             }
+
+            mysqli_stmt_free_result($stmt);
         }
 
-        foreach ( $temp_events as $key => $value ) {
+        if ($does_have_events) {
+
             $collateral_data_removed = false;
 
-            mysqli_stmt_prepare($stmt, "DELETE FROM TOOLS WHERE EventId = ?");
-            mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
+            foreach ( $temp_events as $key => $value ) {               
 
-            if (mysqli_stmt_execute($stmt)) {
-
-                mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
+                mysqli_stmt_prepare($stmt, "DELETE FROM TOOLS WHERE EventId = ?");
                 mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
 
                 if (mysqli_stmt_execute($stmt)) {
 
-                    mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
+                    mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
                     mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
 
                     if (mysqli_stmt_execute($stmt)) {
-                        
-                        $collateral_data_removed = true;
+
+                        mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
+                        mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
+
+                        if (mysqli_stmt_execute($stmt)) {
+                            
+                            $collateral_data_removed = true;
+                        } else {
+
+                            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                        }
                     } else {
 
                         $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
@@ -93,13 +109,22 @@ class User {
 
                     $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
                 }
-            } else {
-
-                $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
             }
-        }
 
-        if ($collateral_data_removed) {
+            if ($collateral_data_removed) {
+                mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE Code = ?");
+                mysqli_stmt_bind_param($stmt, 's', $code);
+    
+                if (mysqli_stmt_execute($stmt)) {
+    
+                    $out_data['error'] = "Deleted user with code: ".$code;
+                } else {
+    
+                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                }
+            }
+        } else {
+
             mysqli_stmt_prepare($stmt, "DELETE FROM `USERS` WHERE Code = ?");
             mysqli_stmt_bind_param($stmt, 's', $code);
 
@@ -195,13 +220,13 @@ class User {
             } while ($token_exists);
         
 
-            if ($temp_code_prefix != null) {
+            if ($temp_user_code != null) {
 
                 $generated_code = $temp_code_prefix . "-" . $generated_code;
 
-                mysqli_stmt_prepare($stmt, "INSERT INTO `USERS` (`Code`, `RUT`, `Firstname`, `Lastname`, `Phone`, `Street`, `HouseNumber`, `City`, `State`, `Country`, `Type`, `Email`, `Pass`, `Token`, `TokenTime`, `CreatedAt`, `UpdatedAt`, `LoggedAt`, `ParentOrg`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, NULL, NULL, ?)");
+                mysqli_stmt_prepare($stmt, "INSERT INTO `USERS` (`Code`, `RUT`, `Firstname`, `Lastname`, `Phone`, `Street`, `HouseNumber`, `City`, `State`, `Country`, `Type`, `Email`, `Pass`, `Token`, `TokenTime`, `CreatedAt`, `UpdatedAt`, `LoggedAt`, `ParentOrg`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(), NULL, NULL, ?)");
 
-                mysqli_stmt_bind_param($stmt, 'ssssisssssisss', $generated_code, $data['rut'], $data['firstname'], $data['lastname'], $data['phone'], $data['street'], $data['house_number'], $data['city'], $data['state'], $data['country'], $data['type'], $data['email'], $data['pass'], $generated_token, $data['parent_org']);
+                mysqli_stmt_bind_param($stmt, 'ssssisssssissss', $generated_code, $data['rut'], $data['firstname'], $data['lastname'], $data['phone'], $data['street'], $data['house_number'], $data['city'], $data['state'], $data['country'], $data['type'], $data['email'], $data['pass'], $generated_token, $data['parent_org']);
 
                 if (mysqli_stmt_execute($stmt)) {
                     $out_data['user_code'] = $generated_code;

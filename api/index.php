@@ -133,7 +133,7 @@ $router->post('/auth', function($request) {
 $router->post('/user/create', function($request) {
     $user = new User();
 
-    return json_encode($user->create($request->getBody()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    return json_encode($user->create($request->getBody()), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_INVALID_UTF8_IGNORE);
 });
 
 // EVENTS
