@@ -55,6 +55,12 @@ $router->get('/', function() {
 });
 
 // USER
+$router->get('/user/all', function($request) {
+    $user = new User();
+
+    return json_encode($user->get_all(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+});
+
 $router->get('/user/{code}', function ($request) {
     $user = new User();
 
@@ -64,7 +70,7 @@ $router->get('/user/{code}', function ($request) {
 $router->get('/user/rut/{rut}', function ($request) {
     $user = new User();
 
-    return json_encode($user->getByRut((String)$request->params->rut));
+    return json_encode($user->get_by_rut((String)$request->params->rut));
 });
 
 $router->get('/user/delete/{code}', function ($request) {

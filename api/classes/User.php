@@ -31,7 +31,7 @@ class User {
         $this->connector = Connector::getConnector();
     }
 
-    public function getByRut($rut){
+    public function get_by_rut($rut){
         $query = mysqli_query($this->connector, "SELECT * FROM `USERS` WHERE RUT LIKE '%$rut'");
         $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
 
@@ -41,6 +41,13 @@ class User {
     public function get($code, $token) {
 
         $query = mysqli_query($this->connector, "SELECT * FROM `USERS` WHERE Code LIKE '%$code' OR Token LIKE '%$token'");
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
+
+        return $result;
+    }
+
+    public function get_all() {
+        $query = mysqli_query($this->connector, "SELECT * FROM `USERS`");
         $result = mysqli_fetch_array($query, MYSQLI_ASSOC);
 
         return $result;
