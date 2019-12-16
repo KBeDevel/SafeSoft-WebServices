@@ -26,13 +26,52 @@ class Tool {
 
             if ($name != null) {
 
-                $out_data['name'] = $name;
-                $out_data['status'] = $status;
-                $out_data['event_id'] = $event_id;
+                $temp_data['name'] = $name;
+                $temp_data['status'] = $status;
+                $temp_data['event_id'] = $event_id;
+
+                $out_data[] = $temp_data;
 
             } else {
 
                 $out_data['error'] = "Tool doesn't exists";
+            }
+        } else {
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connection);
+
+        return $out_data;
+    }
+
+    public function get_by_event($id) {
+
+        $out_data = array();
+
+        $stmt = mysqli_stmt_init($this->connection);
+
+        mysqli_stmt_prepare($stmt, "SELECT `ToolId`, `Name`, `Status` FROM `TOOLS` WHERE EventId = ?");
+        mysqli_stmt_bind_param($stmt, 's', $id);
+
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_bind_result($stmt, $tool_id, $name, $status, );
+            
+            while (mysqli_stmt_fetch($stmt)) {
+                
+                if ($name != null) {
+
+                    $temp_data['tool_id'] = $tool_id;
+                    $temp_data['name'] = $name;
+                    $temp_data['status'] = $status;                    
+
+                    $out_data[] = $temp_data;
+
+                } else {
+
+                    $out_data['error'] = "Tool doesn't exists";
+                }
             }
         } else {
             $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);

@@ -45,6 +45,42 @@ class Comment {
         return $out_data;
     }
 
+    public function get_by_event($id) {
+
+        $out_data = array();
+
+        $stmt = mysqli_stmt_init($this->connection);
+
+        mysqli_stmt_prepare($stmt, "SELECT `CommentId`, `Content`, `Type` FROM `COMMENTS` WHERE EventId = ?");
+        mysqli_stmt_bind_param($stmt, 's', $id);
+
+        if (mysqli_stmt_execute($stmt)) {
+            mysqli_stmt_bind_result($stmt, $comment_id, $content, $type);
+            
+            while (mysqli_stmt_fetch($stmt)) {
+                if ($content != null) {
+
+                    $temp_data['comment_id'] = $comment_id;
+                    $temp_data['content'] = $content;
+                    $temp_data['type'] = $type;
+
+                    $out_data[] = $temp_data;
+
+                } else {
+
+                    $out_data['error'] = "Comment doesn't exists";
+                }
+            }
+        } else {
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connection);
+
+        return $out_data;
+    }
+
     public function delete($id) {
 
         $out_data = array();

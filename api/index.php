@@ -81,10 +81,16 @@ $router->get('/token/{token}', function ($request) {
 });
 
 // EVENT
-$router->get('/event/{id}', function ($request) {
+$router->get('/event/{user_code}', function ($request) {
     $event = new Event();
 
-    return json_encode($event->get((String)$request->params->id));
+    return json_encode($event->get((String)$request->params->user_code));
+});
+
+$router->get('/event/all', function ($request) {
+    $event = new Event();
+
+    return json_encode($event->get_all());
 });
 
 $router->get('/event/delete/{id}', function ($request) {
@@ -100,6 +106,12 @@ $router->get('/comment/{id}', function ($request) {
     return json_encode($comment->get((String)$request->params->id));
 });
 
+$router->get('/comment/event/{id}', function ($request) {
+    $comment = new Comment();
+
+    return json_encode($comment->get_by_event((String)$request->params->id));
+});
+
 $router->get('/comment/delete/{id}', function ($request) {
     $comment = new Comment();
 
@@ -111,6 +123,12 @@ $router->get('/tool/{id}', function($request) {
     $tool = new Tool();
 
     return json_encode($tool->get((String)$request->params->id));
+});
+
+$router->get('/tool/event/{id}', function($request) {
+    $tool = new Tool();
+
+    return json_encode($tool->get_by_event((String)$request->params->id));
 });
 
 $router->get('/tool/delete/{id}', function ($request) {

@@ -17,25 +17,32 @@ class Event {
 
         $stmt = mysqli_stmt_init($this->connector);
 
-        mysqli_stmt_prepare($stmt, "SELECT `SupervisorCorp`, `Type`, `CreatedAt`, `SubmittedAt`, `UserCode` FROM `EVENTS` WHERE EventId = ?");
+        mysqli_stmt_prepare($stmt, "SELECT `EventId`, `SupervisorCorp`, `Type`, `CreatedAt`, `SubmittedAt`  FROM `EVENTS` WHERE `UserCode` = ?");
         mysqli_stmt_bind_param($stmt, 's', $id);
 
         if (mysqli_stmt_execute($stmt)) {
-            mysqli_stmt_bind_result($stmt, $supervisor, $type, $created_at, $submitted_at, $user_code);
-            mysqli_stmt_fetch($stmt);
+            mysqli_stmt_bind_result($stmt, $event_id, $supervisor, $type, $created_at, $submitted_at);
+            
+            while (mysqli_stmt_fetch($stmt)){
 
-            if ($supervisor != null) {
+                if ($supervisor != null) {
 
-                $out_data['supervisor'] = $supervisor;
-                $out_data['type'] = $type;
-                $out_data['created_at'] = $created_at;
-                $out_data['submitted_at'] = $submitted_at;
-                $out_data['user_code'] = $user_code;
+                    $temp_data['event_id'] = $event_id;
+                    $temp_data['supervisor'] = $supervisor;
+                    $temp_data['type'] = $type;
+                    $temp_data['created_at'] = $created_at;
+                    $temp_data['submitted_at'] = $submitted_at;
 
-            } else {
+                    $out_data[] = $temp_data;
 
-                $out_data['error'] = "Event doesn't exists";
+                } else {
+
+                    $out_data['error'] = "Event doesn't exists";
+                    break;
+                }
             }
+
+            mysqli_stmt_free_result($stmt);
         } else {
             $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
         }
@@ -44,6 +51,49 @@ class Event {
         mysqli_close($this->connector);
 
         return $out_data;
+    }
+
+    public function get_all() {
+
+        $out_data = array();
+
+        $stmt = mysqli_stmt_init($this->connector);
+
+        mysqli_stmt_prepare($stmt, "SELECT `EventId`, `SupervisorCorp`, `Type`, `CreatedAt`, `SubmittedAt`, `UserCode` FROM `EVENTS`");
+
+        if (mysqli_stmt_execute($stmt)) {
+
+            mysqli_stmt_bind_result($stmt, $event_id, $supervisor, $type, $created_at, $submitted_at, $user_code);
+
+            while (mysqli_stmt_fetch($stmt)) {
+
+                if ($supervisor != null) {
+
+                    $temp_data['event_id'] = $event_id;
+                    $temp_data['supervisor'] = $supervisor;
+                    $temp_data['type'] = $type;
+                    $temp_data['created_at'] = $created_at;
+                    $temp_data['submitted_at'] = $submitted_at;
+                    $temp_data['user_code'] = $user_code;
+
+                    $out_data[] = $temp_data;
+
+                } else {
+
+                    $out_data['error'] = "Event doesn't exists";
+                    break;
+                }
+            }
+
+            mysqli_stmt_free_result($stmt);
+        } else {
+            $out_data['error'] = "Internal server error. ".mysqli_error($this->connector);
+        }
+
+        mysqli_stmt_close($stmt);
+        mysqli_close($this->connector);
+
+        return $out_data;        
     }
 
     public function delete($id) {

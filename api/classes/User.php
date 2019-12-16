@@ -50,33 +50,33 @@ class User {
 
         $does_have_events = false;
 
+        $temp_events = array();
+
         $out_data = array();
 
-        $stmt = mysqli_stmt_init($this->connection);
+        $stmt = mysqli_stmt_init($this->connector);
 
-        mysqli_stmt_prepare($stmt, "SELECT EventId FROM `EVENTS` WHERE UserCode = ?");
+        mysqli_stmt_prepare($stmt, "SELECT `EventId` FROM EVENTS WHERE `UserCode` = ?");
         mysqli_stmt_bind_param($stmt, 's', $code);
 
         if (mysqli_stmt_execute($stmt)) {
 
             mysqli_stmt_bind_result($stmt, $event_id);
-            $does_have_events = false;
-            $temp_events = mysqli_stmt_fetch($stmt);
-            mysqli_stmt_free_result($stmt);
 
-            if ($temp_events !== null) {
+            while (mysqli_stmt_fetch($stmt)) {
 
-                $does_have_events = true;
+                if ($event_id != null) {
 
-                while ($temp_events) {
-                    if ($event_id !== null) {
-    
-                        $temp = array();
-                        $temp["event_id"] = $event_id;
-                        $temp_events[] = $temp;                      
-                    }
+                    $tmp_evt['event_id'] = $event_id;
+                    $temp_events[] = $tmp_evt;
                 }
-            }
+            }       
+
+            mysqli_stmt_free_result($stmt);
+        }
+
+        if (sizeof($temp_events) > 0) {
+            $does_have_events = true;            
         }
 
         if ($does_have_events) {
@@ -90,10 +90,16 @@ class User {
 
                 if (mysqli_stmt_execute($stmt)) {
 
+                    mysqli_stmt_close($stmt);
+                    $stmt = mysqli_stmt_init($this->connector);
+
                     mysqli_stmt_prepare($stmt, "DELETE FROM COMMENTS WHERE EventId = ?");
                     mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
 
                     if (mysqli_stmt_execute($stmt)) {
+
+                        mysqli_stmt_close($stmt);
+                        $stmt = mysqli_stmt_init($this->connector);
 
                         mysqli_stmt_prepare($stmt, "DELETE FROM `EVENTS` WHERE EventId = ?");
                         mysqli_stmt_bind_param($stmt, 's', $value['event_id']);
@@ -103,15 +109,15 @@ class User {
                             $collateral_data_removed = true;
                         } else {
 
-                            $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                            $out_data['error'] = "Internal server error (EVENTS) . ".mysqli_error($this->connector);
                         }
                     } else {
 
-                        $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                        $out_data['error'] = "Internal server error (COMMENTS). ".mysqli_error($this->connector);
                     }
                 } else {
 
-                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                    $out_data['error'] = "Internal server error (TOOLS). ".mysqli_error($this->connector);
                 }
             }
 
@@ -127,7 +133,7 @@ class User {
                     $out_data['message'] = "Deleted user with code: ".$code;
                 } else {
     
-                    $out_data['error'] = "Internal server error. ".mysqli_error($this->connection);
+                    $out_data['error'] = "Internal server error (USER). ".mysqli_error($this->connector);
                 }
             }
 
@@ -145,12 +151,12 @@ class User {
 
             } else {
 
-                $out_data['error'] = "Internal server error. ".mysqli_errno($this->connector)." - ".mysqli_error($this->connection);
+                $out_data['error'] = "Internal server error. ".mysqli_errno($this->connector)." - ".mysqli_error($this->connector);
             }
         }
 
         mysqli_stmt_close($stmt);
-        mysqli_close($this->connection);
+        mysqli_close($this->connector);
 
         return $out_data;
     }
