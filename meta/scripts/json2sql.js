@@ -59,8 +59,6 @@ for ( let key in json ) {
         
         for ( let prop in json[key][sub_key] ) {
 
-            var rules = [];
-
             if ( prop === 'typ' ) {
 
                 _SQL += json[key][sub_key][prop];

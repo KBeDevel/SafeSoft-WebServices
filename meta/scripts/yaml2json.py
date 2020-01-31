@@ -19,7 +19,8 @@ try:
     process = subprocess.Popen(repoRoot.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
 
-    if error : raise ModuleNotFoundError("Git is not installed")
+    if error :
+        raise ModuleNotFoundError("Git is not installed")
 
     git_root = str(output)[2:][:-3]
 
@@ -27,18 +28,24 @@ try:
 
         file = open(git_root+'/meta/dict/dict.yaml')
 
-        if file is None or len(str(file)) is 0 : raise Exception("Error getting YAML file")
+        if file is None or len(str(file)) is 0 :
+            raise Exception("Error getting YAML file")
 
         try:
 
             yaml = YAML(typ='safe')
             
-            with file as yml_file : data = yaml.load(yml_file)
+            with file as yml_file :
+                data = yaml.load(yml_file)
 
-            with open(git_root+'/meta/dict/dict.json', 'w') as outfile : json.dump(data, outfile, indent=4)
+            with open(git_root+'/meta/dict/dict.json', 'w') as outfile :
+                json.dump(data, outfile, indent=4)
 
-        except : print("Error dumping items")
+        except Exception as error:
+            print("Error dumping items. Error: ", error)
 
-    except Exception as error : print(error)
+    except Exception as error :
+        print(error)
 
-except ModuleNotFoundError as error : print(error)
+except ModuleNotFoundError as error :
+    print(error)

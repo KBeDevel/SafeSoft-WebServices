@@ -142,8 +142,8 @@ function Particle(){
 
             }
         }
-    };
-};
+    }
+}
 
 for (var i = 0; i < particle_count; i++){
     fix_dpi();
