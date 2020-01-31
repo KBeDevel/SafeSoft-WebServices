@@ -1,5 +1,8 @@
 # SafeSoft WebServices
 
+[![CodeFactor](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices/badge)](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices)
+
+
 Repositorio para capa de servicios web de SafeSoft
 
 ## Links de proyecto
