@@ -1,6 +1,6 @@
 # SafeSoft WebServices
 
-[![CodeFactor](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices/badge)](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices) [![CircleCI](https://circleci.com/gh/circleci/circleci-docs.svg?style=svg)](https://circleci.com/gh/KBeDeveloper/SafeSoft-WebServices)
+[![CodeFactor](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices/badge)](https://www.codefactor.io/repository/github/kbedeveloper/safesoft-webservices) [![CircleCI](https://circleci.com/gh/KBeDeveloper/SafeSoft-WebServices.svg?style=svg)](https://circleci.com/gh/KBeDeveloper/SafeSoft-WebServices)
 
 
 Repositorio para capa de servicios web de SafeSoft
