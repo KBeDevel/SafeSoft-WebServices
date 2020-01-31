@@ -1,5 +1,6 @@
 :root{
     --body-bg: #fff;
+    border-width: 0;
 }
 
 html,

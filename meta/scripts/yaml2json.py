@@ -28,7 +28,7 @@ try:
 
         file = open(git_root+'/meta/dict/dict.yaml')
 
-        if file is None or len(str(file)) is 0 :
+        if file === None or len(str(file)) === 0 :
             raise Exception("Error getting YAML file")
 
         try:

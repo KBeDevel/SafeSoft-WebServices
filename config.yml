@@ -56,4 +56,3 @@ jobs:
       #- run: ./vendor/bin/phpunit
       - run: ./vendor/bin/codecept build
       - run: ./vendor/bin/codecept run
-      
